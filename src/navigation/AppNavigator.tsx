@@ -15,6 +15,8 @@ import ChatScreen from '../screens/ChatScreen';
 import CustomerDashboardScreen from '../screens/CustomerDashboardScreen';
 import ProviderDashboardScreen from '../screens/ProviderDashboardScreen';
 import SubscriptionScreen from '../screens/SubscriptionScreen';
+import InsuranceUploadScreen from '../screens/InsuranceUploadScreen';
+import VerificationPaymentScreen from '../screens/VerificationPaymentScreen';
 
 // Types and Data
 import { Provider, Customer, ServiceRequest, Lead, SubscriptionPlan } from '../types';
@@ -206,6 +208,7 @@ function ProviderTabs({ onLogout }: TabsProps) {
             onSubscriptionPress={() => (navigation as any).navigate('Subscription')}
             onLogout={onLogout}
             onViewProfile={() => {}}
+            onVerificationPress={() => (navigation as any).navigate('InsuranceUpload')}
           />
         )}
       </Tab.Screen>
@@ -348,6 +351,36 @@ export default function AppNavigator() {
             onSubscribe={(plan) => {
               handleSubscribe(plan);
               props.navigation.goBack();
+            }}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="InsuranceUpload">
+        {(props) => (
+          <InsuranceUploadScreen
+            onBack={() => props.navigation.goBack()}
+            onComplete={(insuranceData) => {
+              (props.navigation as any).navigate('VerificationPayment', { insuranceData });
+            }}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="VerificationPayment">
+        {(props) => (
+          <VerificationPaymentScreen
+            onBack={() => props.navigation.goBack()}
+            insuranceData={(props.route.params as any)?.insuranceData}
+            onComplete={() => {
+              // Update provider to verified status
+              if (currentUser && 'hasInsurance' in currentUser) {
+                const updatedProvider = {
+                  ...currentUser,
+                  hasInsurance: true,
+                  isVerified: true,
+                };
+                setCurrentUser(updatedProvider);
+              }
+              props.navigation.navigate('MainTabs' as never);
             }}
           />
         )}

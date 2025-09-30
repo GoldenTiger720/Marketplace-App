@@ -13,6 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { Provider, Review } from '../types';
 import { MOCK_REVIEWS } from '../data/mockData';
+import { getProviderLevel, getLevelBadgeColor, getLevelBadgeText } from '../utils/providerUtils';
 
 const { width } = Dimensions.get('window');
 
@@ -42,15 +43,15 @@ export default function ProviderProfileScreen({ provider, onBack, onContactPress
     );
   };
 
-  const getLevelBadge = (level: number) => {
-    const colors = {
-      1: '#CD7F32',
-      2: '#C0C0C0',
-      3: '#FFD700',
-    };
+  const renderLevelBadge = () => {
+    const level = getProviderLevel(provider.rating);
+    const color = getLevelBadgeColor(level);
+    const text = getLevelBadgeText(level);
+
     return (
-      <View style={[styles.levelBadge, { backgroundColor: colors[level as keyof typeof colors] }]}>
-        <Text style={styles.levelBadgeText}>Level {level}</Text>
+      <View style={[styles.levelBadge, { backgroundColor: color }]}>
+        <Ionicons name="star" size={14} color="white" />
+        <Text style={styles.levelBadgeText}>{text}</Text>
       </View>
     );
   };
@@ -165,20 +166,23 @@ export default function ProviderProfileScreen({ provider, onBack, onContactPress
           </View>
 
           <View style={styles.badges}>
-            {getLevelBadge(provider.level)}
-            {provider.isVerified && (
+            {renderLevelBadge()}
+            {provider.isVerified && provider.hasInsurance && (
               <View style={styles.verifiedBadge}>
                 <Ionicons name="shield-checkmark" size={16} color="white" />
-                <Text style={styles.verifiedText}>{t('home.verified')}</Text>
-              </View>
-            )}
-            {provider.hasInsurance && (
-              <View style={styles.insuranceBadge}>
-                <Ionicons name="umbrella" size={16} color="white" />
-                <Text style={styles.insuranceText}>{t('home.insurance')}</Text>
+                <Text style={styles.verifiedText}>Verified</Text>
               </View>
             )}
           </View>
+
+          {provider.isVerified && provider.hasInsurance && (
+            <View style={styles.verificationInfo}>
+              <Ionicons name="information-circle" size={16} color="#4CAF50" />
+              <Text style={styles.verificationText}>
+                Insured & Verified Provider
+              </Text>
+            </View>
+          )}
 
           <View style={styles.priceSection}>
             <Text style={styles.priceLabel}>{t('provider.priceRange')}</Text>
@@ -299,14 +303,28 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   levelBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 15,
+    gap: 4,
   },
   levelBadgeText: {
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold',
+  },
+  verificationInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    gap: 6,
+  },
+  verificationText: {
+    fontSize: 13,
+    color: '#4CAF50',
+    fontWeight: '500',
   },
   verifiedBadge: {
     flexDirection: 'row',

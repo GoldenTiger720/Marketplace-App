@@ -14,6 +14,7 @@ import { Provider, Lead } from '../types';
 import { MOCK_LEADS } from '../data/mockData';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import UserMenu from '../components/UserMenu';
+import { getProviderLevel, VERIFICATION_FEE } from '../utils/providerUtils';
 
 interface Props {
   provider: Provider;
@@ -21,11 +22,14 @@ interface Props {
   onSubscriptionPress: () => void;
   onLogout: () => void;
   onViewProfile: () => void;
+  onVerificationPress?: () => void;
 }
 
-export default function ProviderDashboardScreen({ provider, onLeadPress, onSubscriptionPress, onLogout, onViewProfile }: Props) {
+export default function ProviderDashboardScreen({ provider, onLeadPress, onSubscriptionPress, onLogout, onViewProfile, onVerificationPress }: Props) {
   const { t } = useTranslation();
   const availableLeads = MOCK_LEADS.filter((l) => l.status === 'available');
+  const currentLevel = getProviderLevel(provider.rating);
+  const isVerified = provider.isVerified && provider.hasInsurance;
 
   const getPlanColor = (plan: string) => {
     const colors = {
@@ -62,6 +66,58 @@ export default function ProviderDashboardScreen({ provider, onLeadPress, onSubsc
       </View>
 
       <ScrollView style={styles.content}>
+        {/* Provider Level & Verification Status */}
+        <View style={styles.levelVerificationCard}>
+          <View style={styles.levelSection}>
+            <View style={styles.levelHeader}>
+              <Ionicons name="star" size={32} color="#FFD700" />
+              <View style={styles.levelInfo}>
+                <Text style={styles.levelTitle}>Level {currentLevel} Provider</Text>
+                <Text style={styles.levelSubtitle}>
+                  {provider.rating.toFixed(1)} stars ({provider.reviewCount} reviews)
+                </Text>
+              </View>
+            </View>
+            <Text style={styles.levelDescription}>
+              {currentLevel === 2
+                ? 'Excellent! Keep up the great work to maintain Level 2.'
+                : 'Get 4+ stars to reach Level 2 status.'}
+            </Text>
+          </View>
+
+          {!isVerified && (
+            <TouchableOpacity
+              style={styles.verificationPrompt}
+              onPress={onVerificationPress}
+            >
+              <View style={styles.verificationPromptLeft}>
+                <View style={styles.verificationIcon}>
+                  <Ionicons name="shield-checkmark-outline" size={28} color="#667eea" />
+                </View>
+                <View style={styles.verificationInfo}>
+                  <Text style={styles.verificationTitle}>Get Verified Badge</Text>
+                  <Text style={styles.verificationSubtitle}>
+                    ${VERIFICATION_FEE}/month • Boost credibility
+                  </Text>
+                </View>
+              </View>
+              <Ionicons name="chevron-forward" size={24} color="#999" />
+            </TouchableOpacity>
+          )}
+
+          {isVerified && (
+            <View style={styles.verifiedStatus}>
+              <Ionicons name="shield-checkmark" size={24} color="#4CAF50" />
+              <View style={styles.verifiedInfo}>
+                <Text style={styles.verifiedTitle}>✓ Verified Provider</Text>
+                <Text style={styles.verifiedSubtitle}>
+                  Insurance verified • Badge active
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
+
         {/* Subscription Status */}
         <TouchableOpacity style={styles.subscriptionCard} onPress={onSubscriptionPress}>
           <View style={styles.subscriptionHeader}>
@@ -263,6 +319,103 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  levelVerificationCard: {
+    backgroundColor: 'white',
+    margin: 20,
+    marginBottom: 10,
+    borderRadius: 16,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  levelSection: {
+    marginBottom: 16,
+  },
+  levelHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  levelInfo: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  levelTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 2,
+  },
+  levelSubtitle: {
+    fontSize: 13,
+    color: '#999',
+  },
+  levelDescription: {
+    fontSize: 14,
+    color: '#666',
+    lineHeight: 20,
+  },
+  verificationPrompt: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+    borderRadius: 12,
+    backgroundColor: '#f0f0ff',
+    borderWidth: 1,
+    borderColor: '#667eea',
+  },
+  verificationPromptLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  verificationIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  verificationInfo: {
+    flex: 1,
+  },
+  verificationTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#667eea',
+    marginBottom: 2,
+  },
+  verificationSubtitle: {
+    fontSize: 12,
+    color: '#666',
+  },
+  verifiedStatus: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 12,
+    backgroundColor: '#E8F5E9',
+  },
+  verifiedInfo: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  verifiedTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#4CAF50',
+    marginBottom: 2,
+  },
+  verifiedSubtitle: {
+    fontSize: 12,
+    color: '#666',
   },
   subscriptionCard: {
     backgroundColor: 'white',
