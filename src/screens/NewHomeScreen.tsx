@@ -132,7 +132,7 @@ export default function NewHomeScreen({ userName, onSearch, onNotifications }: P
     },
   ];
 
-  const tutoring Services = [
+  const tutoringServices = [
     {
       id: '1',
       title: t('home.collegeAdmissions'),
