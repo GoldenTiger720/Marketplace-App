@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import HomeScreen from '../screens/HomeScreen';
+import NewHomeScreen from '../screens/NewHomeScreen';
 import ProviderProfileScreen from '../screens/ProviderProfileScreen';
 import CustomerProfileScreen from '../screens/CustomerProfileScreen';
 import ChatScreen from '../screens/ChatScreen';
@@ -75,6 +76,23 @@ function CustomerTabs({ onLogout }: TabsProps) {
     >
       <Tab.Screen
         name="Home"
+        options={{
+          tabBarLabel: t('common.home'),
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
+          ),
+        }}
+      >
+        {() => (
+          <NewHomeScreen
+            userName={customer.name.split(' ')[0]}
+            onSearch={(query) => console.log('Search:', query)}
+            onNotifications={() => console.log('Notifications')}
+          />
+        )}
+      </Tab.Screen>
+      <Tab.Screen
+        name="Search"
         options={{
           tabBarLabel: t('common.search'),
           tabBarIcon: ({ color, size }) => (
