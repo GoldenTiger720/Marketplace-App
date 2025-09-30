@@ -295,17 +295,19 @@ export default function AppNavigator() {
         businessName: data.businessName,
       });
 
-      setCurrentUser(user);
-      setIsAuthenticated(true);
-
       if (data.role === 'provider') {
         // Providers must complete background check before activation
-        // Navigate to background check consent
+        // Don't authenticate yet, let them complete background check first
+        setCurrentUser(user);
         if (navigation) {
           setTimeout(() => {
             navigation.navigate('BackgroundCheckConsent');
           }, 100);
         }
+      } else {
+        // Customers can be authenticated immediately
+        setCurrentUser(user);
+        setIsAuthenticated(true);
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -393,9 +395,8 @@ export default function AppNavigator() {
             return (
               <BackgroundCheckStatusScreen
                 onBack={() => {
-                  // After viewing status, log them in to see pending state
+                  // After viewing status, authenticate them so they can see dashboard
                   setIsAuthenticated(true);
-                  props.navigation.navigate('Login' as never);
                 }}
                 backgroundCheck={mockBackgroundCheck}
               />

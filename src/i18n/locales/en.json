@@ -197,7 +197,12 @@
       "changeAvatar": "Change Avatar",
       "choosePhoto": "Choose Photo",
       "takePhoto": "Take Photo",
-      "removePhoto": "Remove Photo"
+      "removePhoto": "Remove Photo",
+      "avatarUpdated": "Profile image updated successfully",
+      "avatarUpdateFailed": "Failed to update profile image",
+      "permissionRequired": "Permission required",
+      "cameraPermissionMessage": "Camera permission is required to take photos",
+      "libraryPermissionMessage": "Photo library permission is required"
     }
   }
 }

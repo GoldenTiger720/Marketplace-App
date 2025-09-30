@@ -16,6 +16,8 @@ import { useTranslation } from 'react-i18next';
 import * as ImagePicker from 'expo-image-picker';
 import { Customer, ServiceRequest, Review } from '../types';
 import { MOCK_SERVICE_REQUESTS, MOCK_REVIEWS } from '../data/mockData';
+import { updateUser } from '../database/userService';
+import { useApp } from '../contexts/AppContext';
 
 interface Props {
   customer: Customer;
@@ -25,11 +27,35 @@ interface Props {
 
 export default function CustomerProfileScreen({ customer, onBack, onEditProfile }: Props) {
   const { t } = useTranslation();
+  const { currentUser, setCurrentUser } = useApp();
   const [selectedTab, setSelectedTab] = useState<'requests' | 'reviews'>('requests');
   const [profileImage, setProfileImage] = useState(customer.profileImage);
 
   const customerRequests = MOCK_SERVICE_REQUESTS.filter((r) => r.customerId === customer.id);
   const customerReviews = MOCK_REVIEWS.filter((r) => r.customerId === customer.id);
+
+  const updateProfileImage = async (imageUri: string) => {
+    try {
+      // Update in database
+      await updateUser(customer.id, { profileImage: imageUri });
+
+      // Update local state
+      setProfileImage(imageUri);
+
+      // Update context with new profile image
+      if (currentUser) {
+        setCurrentUser({
+          ...currentUser,
+          profileImage: imageUri,
+        });
+      }
+
+      Alert.alert(t('common.success'), t('profile.avatarUpdated'));
+    } catch (error) {
+      console.error('Error updating profile image:', error);
+      Alert.alert(t('common.error'), t('profile.avatarUpdateFailed'));
+    }
+  };
 
   const handleChangeAvatar = async () => {
     if (Platform.OS === 'ios') {
@@ -63,40 +89,38 @@ export default function CustomerProfileScreen({ customer, onBack, onEditProfile 
   const takePhoto = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Permission required', 'Camera permission is required to take photos');
+      Alert.alert(t('profile.permissionRequired'), t('profile.cameraPermissionMessage'));
       return;
     }
 
     const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.8,
     });
 
     if (!result.canceled && result.assets[0]) {
-      setProfileImage(result.assets[0].uri);
-      // In a real app, upload to server here
+      await updateProfileImage(result.assets[0].uri);
     }
   };
 
   const choosePhoto = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Permission required', 'Photo library permission is required');
+      Alert.alert(t('profile.permissionRequired'), t('profile.libraryPermissionMessage'));
       return;
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.8,
     });
 
     if (!result.canceled && result.assets[0]) {
-      setProfileImage(result.assets[0].uri);
-      // In a real app, upload to server here
+      await updateProfileImage(result.assets[0].uri);
     }
   };
 

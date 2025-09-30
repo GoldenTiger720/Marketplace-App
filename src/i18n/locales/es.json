@@ -197,7 +197,12 @@
       "changeAvatar": "Cambiar Avatar",
       "choosePhoto": "Elegir Foto",
       "takePhoto": "Tomar Foto",
-      "removePhoto": "Eliminar Foto"
+      "removePhoto": "Eliminar Foto",
+      "avatarUpdated": "Imagen de perfil actualizada exitosamente",
+      "avatarUpdateFailed": "Error al actualizar imagen de perfil",
+      "permissionRequired": "Permiso requerido",
+      "cameraPermissionMessage": "Se requiere permiso de cámara para tomar fotos",
+      "libraryPermissionMessage": "Se requiere permiso de galería de fotos"
     }
   }
 }
