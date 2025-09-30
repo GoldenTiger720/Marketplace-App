@@ -38,6 +38,9 @@ export interface Provider extends User {
   completedJobs: number;
   bonusLeads: number;
   customerRating?: number;
+  backgroundCheckStatus: BackgroundCheckStatus;
+  backgroundCheckDate?: string;
+  profileActivated: boolean;
 }
 
 export interface Customer extends User {
@@ -212,3 +215,57 @@ export interface PaymentTransaction {
 }
 
 export type PaymentGateway = 'stripe' | 'braintree';
+
+export type BackgroundCheckStatus =
+  | 'pending'
+  | 'in_progress'
+  | 'clear'
+  | 'flagged'
+  | 'rejected'
+  | 'expired';
+
+export interface BackgroundCheck {
+  id: string;
+  providerId: string;
+  status: BackgroundCheckStatus;
+  initiatedAt: string;
+  completedAt?: string;
+  provider: string; // Background check service provider (e.g., 'Checkr', 'Sterling')
+  results: BackgroundCheckResults;
+}
+
+export interface BackgroundCheckResults {
+  criminalRecordsCheck: CheckResult;
+  sexOffenderRegistryCheck: CheckResult;
+  nationalDatabaseCheck: CheckResult;
+  stateRecordsCheck: CheckResult;
+  identityVerification: CheckResult;
+  flags?: BackgroundCheckFlag[];
+  clearanceLevel: 'approved' | 'review_required' | 'denied';
+}
+
+export interface CheckResult {
+  status: 'clear' | 'flagged' | 'pending';
+  checkedAt: string;
+  details?: string;
+}
+
+export interface BackgroundCheckFlag {
+  id: string;
+  type: 'criminal_record' | 'sex_offender' | 'identity_mismatch' | 'incomplete_data';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  description: string;
+  recordDate?: string;
+  jurisdiction?: string;
+}
+
+export interface BackgroundCheckConsent {
+  providerId: string;
+  consentGivenAt: string;
+  ipAddress: string;
+  fullLegalName: string;
+  dateOfBirth: string;
+  socialSecurityNumber: string; // Encrypted in real implementation
+  driversLicenseNumber?: string;
+  agreedToTerms: boolean;
+}

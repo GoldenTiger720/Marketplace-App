@@ -21,6 +21,8 @@ import SubmitReviewScreen from '../screens/SubmitReviewScreen';
 import DisputeReviewScreen from '../screens/DisputeReviewScreen';
 import LeadPurchaseScreen from '../screens/LeadPurchaseScreen';
 import PaymentProcessingScreen from '../screens/PaymentProcessingScreen';
+import BackgroundCheckConsentScreen from '../screens/BackgroundCheckConsentScreen';
+import BackgroundCheckStatusScreen from '../screens/BackgroundCheckStatusScreen';
 
 // Types and Data
 import { Provider, Customer, ServiceRequest, Lead, SubscriptionPlan } from '../types';
@@ -267,12 +269,30 @@ export default function AppNavigator() {
     setCurrentUser(MOCK_CUSTOMERS[0]);
   };
 
-  const handleRegister = (data: any) => {
+  const handleRegister = (data: any, navigation?: any) => {
     // Mock registration
-    setIsAuthenticated(true);
     if (data.role === 'provider') {
-      setCurrentUser(MOCK_PROVIDERS[0]);
+      // Providers must complete background check before activation
+      // Create temporary provider account (profile not activated)
+      const tempProvider = {
+        ...MOCK_PROVIDERS[5], // Use p6 which has in_progress status
+        name: data.name,
+        email: data.email,
+        backgroundCheckStatus: 'pending' as const,
+        profileActivated: false,
+      };
+      setCurrentUser(tempProvider);
+      setIsAuthenticated(true);
+
+      // Navigate to background check consent
+      if (navigation) {
+        setTimeout(() => {
+          navigation.navigate('BackgroundCheckConsent');
+        }, 100);
+      }
     } else {
+      // Customers can be activated immediately
+      setIsAuthenticated(true);
       setCurrentUser(MOCK_CUSTOMERS[0]);
     }
   };
@@ -305,10 +325,66 @@ export default function AppNavigator() {
           {(props) => (
             <RegisterScreen
               {...props}
-              onRegister={handleRegister}
+              onRegister={(data) => handleRegister(data, props.navigation)}
               onNavigateToLogin={() => props.navigation.navigate('Login' as never)}
             />
           )}
+        </Stack.Screen>
+        <Stack.Screen name="BackgroundCheckConsent">
+          {(props) => (
+            <BackgroundCheckConsentScreen
+              onBack={() => props.navigation.goBack()}
+              onSubmit={(consentData) => {
+                console.log('Background check consent submitted:', consentData);
+                (props.navigation as any).navigate('BackgroundCheckStatus');
+              }}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="BackgroundCheckStatus">
+          {(props) => {
+            const mockBackgroundCheck = {
+              id: 'bg_new',
+              providerId: currentUser?.id || '',
+              status: 'in_progress' as const,
+              initiatedAt: new Date().toISOString(),
+              provider: 'Checkr',
+              results: {
+                criminalRecordsCheck: {
+                  status: 'pending' as const,
+                  checkedAt: new Date().toISOString(),
+                },
+                sexOffenderRegistryCheck: {
+                  status: 'pending' as const,
+                  checkedAt: new Date().toISOString(),
+                },
+                nationalDatabaseCheck: {
+                  status: 'pending' as const,
+                  checkedAt: new Date().toISOString(),
+                },
+                stateRecordsCheck: {
+                  status: 'pending' as const,
+                  checkedAt: new Date().toISOString(),
+                },
+                identityVerification: {
+                  status: 'pending' as const,
+                  checkedAt: new Date().toISOString(),
+                },
+                clearanceLevel: 'review_required' as const,
+              },
+            };
+
+            return (
+              <BackgroundCheckStatusScreen
+                onBack={() => {
+                  // After viewing status, log them in to see pending state
+                  setIsAuthenticated(true);
+                  props.navigation.navigate('Login' as never);
+                }}
+                backgroundCheck={mockBackgroundCheck}
+              />
+            );
+          }}
         </Stack.Screen>
       </Stack.Navigator>
     );

@@ -1,4 +1,4 @@
-import { Provider, Customer, Review, ServiceRequest, Conversation, Message, Lead, GamificationReward, LeadPurchase, PaymentTransaction, PaymentMethod } from '../types';
+import { Provider, Customer, Review, ServiceRequest, Conversation, Message, Lead, GamificationReward, LeadPurchase, PaymentTransaction, PaymentMethod, BackgroundCheck } from '../types';
 
 export const MOCK_PROVIDERS: Provider[] = [
   {
@@ -40,6 +40,9 @@ export const MOCK_PROVIDERS: Provider[] = [
     completedJobs: 342,
     bonusLeads: 2,
     customerRating: 4.9,
+    backgroundCheckStatus: 'clear',
+    backgroundCheckDate: '2023-01-10T10:00:00Z',
+    profileActivated: true,
     createdAt: '2023-01-15T10:00:00Z',
   },
   {
@@ -77,6 +80,9 @@ export const MOCK_PROVIDERS: Provider[] = [
     completedJobs: 234,
     bonusLeads: 5,
     customerRating: 5.0,
+    backgroundCheckStatus: 'clear',
+    backgroundCheckDate: '2023-03-15T10:00:00Z',
+    profileActivated: true,
     createdAt: '2023-03-20T10:00:00Z',
   },
   {
@@ -116,6 +122,9 @@ export const MOCK_PROVIDERS: Provider[] = [
     completedJobs: 456,
     bonusLeads: 0,
     customerRating: 4.8,
+    backgroundCheckStatus: 'clear',
+    backgroundCheckDate: '2022-11-05T10:00:00Z',
+    profileActivated: true,
     createdAt: '2022-11-10T10:00:00Z',
   },
   {
@@ -154,6 +163,9 @@ export const MOCK_PROVIDERS: Provider[] = [
     completedJobs: 189,
     bonusLeads: 0,
     customerRating: 4.5,
+    backgroundCheckStatus: 'clear',
+    backgroundCheckDate: '2023-05-08T10:00:00Z',
+    profileActivated: true,
     createdAt: '2023-05-12T10:00:00Z',
   },
   {
@@ -198,6 +210,9 @@ export const MOCK_PROVIDERS: Provider[] = [
     completedJobs: 278,
     bonusLeads: 2,
     customerRating: 4.6,
+    backgroundCheckStatus: 'clear',
+    backgroundCheckDate: '2022-08-01T10:00:00Z',
+    profileActivated: true,
     createdAt: '2022-08-05T10:00:00Z',
   },
   {
@@ -232,6 +247,8 @@ export const MOCK_PROVIDERS: Provider[] = [
     completedJobs: 67,
     bonusLeads: 0,
     customerRating: 3.5,
+    backgroundCheckStatus: 'in_progress',
+    profileActivated: false,
     createdAt: '2024-02-01T10:00:00Z',
   },
 ];
@@ -692,6 +709,108 @@ export const MOCK_PAYMENT_TRANSACTIONS: PaymentTransaction[] = [
     paymentMethodId: 'pm1',
     description: 'Single Lead Purchase',
     createdAt: '2024-09-28T09:15:00Z',
+  },
+];
+
+export const MOCK_BACKGROUND_CHECKS: BackgroundCheck[] = [
+  {
+    id: 'bg1',
+    providerId: 'p1',
+    status: 'clear',
+    initiatedAt: '2023-01-08T10:00:00Z',
+    completedAt: '2023-01-10T15:30:00Z',
+    provider: 'Checkr',
+    results: {
+      criminalRecordsCheck: {
+        status: 'clear',
+        checkedAt: '2023-01-09T10:00:00Z',
+        details: 'No criminal records found',
+      },
+      sexOffenderRegistryCheck: {
+        status: 'clear',
+        checkedAt: '2023-01-09T11:00:00Z',
+        details: 'Not listed in national or state sex offender registries',
+      },
+      nationalDatabaseCheck: {
+        status: 'clear',
+        checkedAt: '2023-01-09T12:00:00Z',
+        details: 'Clean national database search',
+      },
+      stateRecordsCheck: {
+        status: 'clear',
+        checkedAt: '2023-01-09T13:00:00Z',
+        details: 'No state-level records found',
+      },
+      identityVerification: {
+        status: 'clear',
+        checkedAt: '2023-01-09T14:00:00Z',
+        details: 'Identity verified successfully',
+      },
+      clearanceLevel: 'approved',
+    },
+  },
+  {
+    id: 'bg2',
+    providerId: 'p2',
+    status: 'clear',
+    initiatedAt: '2023-03-13T10:00:00Z',
+    completedAt: '2023-03-15T16:45:00Z',
+    provider: 'Sterling',
+    results: {
+      criminalRecordsCheck: {
+        status: 'clear',
+        checkedAt: '2023-03-14T10:00:00Z',
+        details: 'No criminal records found',
+      },
+      sexOffenderRegistryCheck: {
+        status: 'clear',
+        checkedAt: '2023-03-14T11:00:00Z',
+        details: 'Not listed in sex offender registries',
+      },
+      nationalDatabaseCheck: {
+        status: 'clear',
+        checkedAt: '2023-03-14T12:00:00Z',
+      },
+      stateRecordsCheck: {
+        status: 'clear',
+        checkedAt: '2023-03-14T13:00:00Z',
+      },
+      identityVerification: {
+        status: 'clear',
+        checkedAt: '2023-03-14T14:00:00Z',
+      },
+      clearanceLevel: 'approved',
+    },
+  },
+  {
+    id: 'bg6',
+    providerId: 'p6',
+    status: 'in_progress',
+    initiatedAt: '2024-02-02T10:00:00Z',
+    provider: 'Checkr',
+    results: {
+      criminalRecordsCheck: {
+        status: 'pending',
+        checkedAt: '2024-02-02T10:00:00Z',
+      },
+      sexOffenderRegistryCheck: {
+        status: 'pending',
+        checkedAt: '2024-02-02T10:00:00Z',
+      },
+      nationalDatabaseCheck: {
+        status: 'pending',
+        checkedAt: '2024-02-02T10:00:00Z',
+      },
+      stateRecordsCheck: {
+        status: 'pending',
+        checkedAt: '2024-02-02T10:00:00Z',
+      },
+      identityVerification: {
+        status: 'pending',
+        checkedAt: '2024-02-02T10:00:00Z',
+      },
+      clearanceLevel: 'review_required',
+    },
   },
 ];
 
