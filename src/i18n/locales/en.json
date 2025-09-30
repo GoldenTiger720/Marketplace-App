@@ -1,0 +1,82 @@
+{
+  "translation": {
+    "common": {
+      "search": "Search",
+      "filter": "Filter",
+      "apply": "Apply",
+      "cancel": "Cancel",
+      "save": "Save",
+      "edit": "Edit",
+      "delete": "Delete",
+      "submit": "Submit",
+      "send": "Send",
+      "back": "Back",
+      "next": "Next",
+      "loading": "Loading...",
+      "error": "Error",
+      "success": "Success"
+    },
+    "auth": {
+      "login": "Login",
+      "register": "Register",
+      "email": "Email",
+      "password": "Password",
+      "name": "Full Name",
+      "phone": "Phone Number",
+      "zipCode": "Zip Code",
+      "city": "City",
+      "state": "State",
+      "role": "I am a",
+      "customer": "Customer",
+      "provider": "Service Provider",
+      "signIn": "Sign In",
+      "signUp": "Sign Up",
+      "forgotPassword": "Forgot Password?",
+      "noAccount": "Don't have an account?",
+      "hasAccount": "Already have an account?"
+    },
+    "home": {
+      "title": "Find Local Services",
+      "searchPlaceholder": "What service do you need?",
+      "categories": "Categories",
+      "topRated": "Top Rated Providers",
+      "verified": "Verified",
+      "insurance": "Insured"
+    },
+    "provider": {
+      "profile": "Profile",
+      "services": "Services",
+      "portfolio": "Portfolio",
+      "reviews": "Reviews",
+      "about": "About",
+      "experience": "Experience",
+      "priceRange": "Price Range",
+      "contactProvider": "Contact Provider",
+      "level": "Level",
+      "completedJobs": "Completed Jobs",
+      "responseTime": "Response Time"
+    },
+    "dashboard": {
+      "myRequests": "My Requests",
+      "myLeads": "My Leads",
+      "availableLeads": "Available Leads",
+      "messages": "Messages",
+      "earnings": "Earnings",
+      "stats": "Statistics"
+    },
+    "filters": {
+      "rating": "Minimum Rating",
+      "distance": "Distance (miles)",
+      "verifiedOnly": "Verified Only",
+      "withInsurance": "With Insurance",
+      "priceRange": "Price Range"
+    },
+    "reviews": {
+      "writeReview": "Write a Review",
+      "rating": "Rating",
+      "comment": "Comment",
+      "helpful": "Helpful",
+      "reportReview": "Report Review"
+    }
+  }
+}

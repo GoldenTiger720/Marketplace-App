@@ -1,0 +1,546 @@
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  Image,
+  Dimensions,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
+import { Provider, Review } from '../types';
+import { MOCK_REVIEWS } from '../data/mockData';
+
+const { width } = Dimensions.get('window');
+
+interface Props {
+  provider: Provider;
+  onBack: () => void;
+  onContactPress: () => void;
+}
+
+export default function ProviderProfileScreen({ provider, onBack, onContactPress }: Props) {
+  const { t } = useTranslation();
+  const [selectedTab, setSelectedTab] = useState<'about' | 'portfolio' | 'reviews'>('about');
+  const reviews = MOCK_REVIEWS.filter((r) => r.providerId === provider.id);
+
+  const renderStars = (rating: number) => {
+    return (
+      <View style={styles.starsContainer}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Ionicons
+            key={star}
+            name={star <= rating ? 'star' : star - 0.5 <= rating ? 'star-half' : 'star-outline'}
+            size={18}
+            color="#FFD700"
+          />
+        ))}
+      </View>
+    );
+  };
+
+  const getLevelBadge = (level: number) => {
+    const colors = {
+      1: '#CD7F32',
+      2: '#C0C0C0',
+      3: '#FFD700',
+    };
+    return (
+      <View style={[styles.levelBadge, { backgroundColor: colors[level as keyof typeof colors] }]}>
+        <Text style={styles.levelBadgeText}>Level {level}</Text>
+      </View>
+    );
+  };
+
+  const renderAbout = () => (
+    <View style={styles.tabContent}>
+      <Text style={styles.bio}>{provider.bio}</Text>
+
+      <View style={styles.infoGrid}>
+        <View style={styles.infoCard}>
+          <Ionicons name="briefcase-outline" size={24} color="#667eea" />
+          <Text style={styles.infoLabel}>{t('provider.experience')}</Text>
+          <Text style={styles.infoValue}>{provider.experience}</Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Ionicons name="checkmark-done-outline" size={24} color="#667eea" />
+          <Text style={styles.infoLabel}>{t('provider.completedJobs')}</Text>
+          <Text style={styles.infoValue}>{provider.completedJobs}</Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Ionicons name="time-outline" size={24} color="#667eea" />
+          <Text style={styles.infoLabel}>{t('provider.responseTime')}</Text>
+          <Text style={styles.infoValue}>{'< 1 hour'}</Text>
+        </View>
+
+        <View style={styles.infoCard}>
+          <Ionicons name="location-outline" size={24} color="#667eea" />
+          <Text style={styles.infoLabel}>Location</Text>
+          <Text style={styles.infoValue}>{provider.city}, {provider.state}</Text>
+        </View>
+      </View>
+
+      <View style={styles.servicesSection}>
+        <Text style={styles.sectionTitle}>{t('provider.services')}</Text>
+        <View style={styles.servicesList}>
+          {provider.services.map((service, index) => (
+            <View key={index} style={styles.serviceChip}>
+              <Text style={styles.serviceChipText}>{service}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderPortfolio = () => (
+    <View style={styles.tabContent}>
+      <View style={styles.portfolioGrid}>
+        {provider.portfolio.map((image, index) => (
+          <Image key={index} source={{ uri: image }} style={styles.portfolioImage} />
+        ))}
+      </View>
+    </View>
+  );
+
+  const renderReviews = () => (
+    <View style={styles.tabContent}>
+      {reviews.length === 0 ? (
+        <Text style={styles.noReviews}>No reviews yet</Text>
+      ) : (
+        reviews.map((review) => (
+          <View key={review.id} style={styles.reviewCard}>
+            <View style={styles.reviewHeader}>
+              <Image source={{ uri: review.customerImage }} style={styles.reviewerImage} />
+              <View style={styles.reviewerInfo}>
+                <Text style={styles.reviewerName}>{review.customerName}</Text>
+                <View style={styles.reviewRating}>
+                  {renderStars(review.rating)}
+                  <Text style={styles.reviewDate}>
+                    {new Date(review.createdAt).toLocaleDateString()}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <Text style={styles.reviewComment}>{review.comment}</Text>
+            <Text style={styles.reviewService}>{review.serviceType}</Text>
+            {review.providerResponse && (
+              <View style={styles.providerResponse}>
+                <Text style={styles.providerResponseLabel}>Provider Response:</Text>
+                <Text style={styles.providerResponseText}>{review.providerResponse}</Text>
+              </View>
+            )}
+          </View>
+        ))
+      )}
+    </View>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={onBack} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#333" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>{t('provider.profile')}</Text>
+        <View style={styles.headerRight} />
+      </View>
+
+      <ScrollView>
+        <View style={styles.profileHeader}>
+          <Image source={{ uri: provider.profileImage }} style={styles.profileImage} />
+          <Text style={styles.businessName}>{provider.businessName}</Text>
+          <Text style={styles.ownerName}>{provider.name}</Text>
+
+          <View style={styles.ratingSection}>
+            {renderStars(provider.rating)}
+            <Text style={styles.ratingText}>
+              {provider.rating.toFixed(1)} ({provider.reviewCount} {t('provider.reviews')})
+            </Text>
+          </View>
+
+          <View style={styles.badges}>
+            {getLevelBadge(provider.level)}
+            {provider.isVerified && (
+              <View style={styles.verifiedBadge}>
+                <Ionicons name="shield-checkmark" size={16} color="white" />
+                <Text style={styles.verifiedText}>{t('home.verified')}</Text>
+              </View>
+            )}
+            {provider.hasInsurance && (
+              <View style={styles.insuranceBadge}>
+                <Ionicons name="umbrella" size={16} color="white" />
+                <Text style={styles.insuranceText}>{t('home.insurance')}</Text>
+              </View>
+            )}
+          </View>
+
+          <View style={styles.priceSection}>
+            <Text style={styles.priceLabel}>{t('provider.priceRange')}</Text>
+            <Text style={styles.priceValue}>
+              ${provider.priceRange.min} - ${provider.priceRange.max}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.tabBar}>
+          <TouchableOpacity
+            style={[styles.tab, selectedTab === 'about' && styles.tabActive]}
+            onPress={() => setSelectedTab('about')}
+          >
+            <Text style={[styles.tabText, selectedTab === 'about' && styles.tabTextActive]}>
+              {t('provider.about')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, selectedTab === 'portfolio' && styles.tabActive]}
+            onPress={() => setSelectedTab('portfolio')}
+          >
+            <Text style={[styles.tabText, selectedTab === 'portfolio' && styles.tabTextActive]}>
+              {t('provider.portfolio')}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, selectedTab === 'reviews' && styles.tabActive]}
+            onPress={() => setSelectedTab('reviews')}
+          >
+            <Text style={[styles.tabText, selectedTab === 'reviews' && styles.tabTextActive]}>
+              {t('provider.reviews')} ({reviews.length})
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {selectedTab === 'about' && renderAbout()}
+        {selectedTab === 'portfolio' && renderPortfolio()}
+        {selectedTab === 'reviews' && renderReviews()}
+      </ScrollView>
+
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.contactButton} onPress={onContactPress}>
+          <Ionicons name="chatbubble-outline" size={20} color="white" />
+          <Text style={styles.contactButtonText}>{t('provider.contactProvider')}</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f8f9fa',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    paddingTop: 40,
+    paddingBottom: 15,
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  backButton: {
+    padding: 5,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  headerRight: {
+    width: 34,
+  },
+  profileHeader: {
+    backgroundColor: 'white',
+    padding: 20,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 15,
+  },
+  businessName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 5,
+  },
+  ownerName: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 10,
+  },
+  ratingSection: {
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  starsContainer: {
+    flexDirection: 'row',
+    marginBottom: 5,
+  },
+  ratingText: {
+    fontSize: 14,
+    color: '#666',
+  },
+  badges: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 15,
+  },
+  levelBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
+  },
+  levelBadgeText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  verifiedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#4CAF50',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
+    gap: 5,
+  },
+  verifiedText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  insuranceBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#2196F3',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
+    gap: 5,
+  },
+  insuranceText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  priceSection: {
+    alignItems: 'center',
+  },
+  priceLabel: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 5,
+  },
+  priceValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#667eea',
+  },
+  tabBar: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 15,
+    alignItems: 'center',
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
+  },
+  tabActive: {
+    borderBottomColor: '#667eea',
+  },
+  tabText: {
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '500',
+  },
+  tabTextActive: {
+    color: '#667eea',
+    fontWeight: 'bold',
+  },
+  tabContent: {
+    padding: 20,
+  },
+  bio: {
+    fontSize: 15,
+    color: '#666',
+    lineHeight: 22,
+    marginBottom: 20,
+  },
+  infoGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 15,
+    marginBottom: 20,
+  },
+  infoCard: {
+    flex: 1,
+    minWidth: '45%',
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 12,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  infoLabel: {
+    fontSize: 12,
+    color: '#999',
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  infoValue: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#333',
+    marginTop: 4,
+    textAlign: 'center',
+  },
+  servicesSection: {
+    marginTop: 10,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 15,
+  },
+  servicesList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  serviceChip: {
+    backgroundColor: '#e8eaf6',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  serviceChipText: {
+    fontSize: 13,
+    color: '#667eea',
+    fontWeight: '500',
+  },
+  portfolioGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  portfolioImage: {
+    width: (width - 50) / 2,
+    height: (width - 50) / 2,
+    borderRadius: 12,
+  },
+  noReviews: {
+    textAlign: 'center',
+    color: '#999',
+    fontSize: 16,
+    marginTop: 20,
+  },
+  reviewCard: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 12,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  reviewHeader: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  reviewerImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  reviewerInfo: {
+    flex: 1,
+  },
+  reviewerName: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 3,
+  },
+  reviewRating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  reviewDate: {
+    fontSize: 12,
+    color: '#999',
+  },
+  reviewComment: {
+    fontSize: 14,
+    color: '#666',
+    lineHeight: 20,
+    marginBottom: 8,
+  },
+  reviewService: {
+    fontSize: 12,
+    color: '#667eea',
+    fontWeight: '500',
+  },
+  providerResponse: {
+    backgroundColor: '#f5f5f5',
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  providerResponseLabel: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 5,
+  },
+  providerResponseText: {
+    fontSize: 13,
+    color: '#666',
+    lineHeight: 18,
+  },
+  footer: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#eee',
+  },
+  contactButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#667eea',
+    paddingVertical: 15,
+    borderRadius: 12,
+    gap: 10,
+  },
+  contactButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});

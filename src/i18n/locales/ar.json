@@ -1,0 +1,82 @@
+{
+  "translation": {
+    "common": {
+      "search": "بحث",
+      "filter": "تصفية",
+      "apply": "تطبيق",
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "submit": "إرسال",
+      "send": "إرسال",
+      "back": "رجوع",
+      "next": "التالي",
+      "loading": "جاري التحميل...",
+      "error": "خطأ",
+      "success": "نجح"
+    },
+    "auth": {
+      "login": "تسجيل الدخول",
+      "register": "التسجيل",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "name": "الاسم الكامل",
+      "phone": "رقم الهاتف",
+      "zipCode": "الرمز البريدي",
+      "city": "المدينة",
+      "state": "الولاية",
+      "role": "أنا",
+      "customer": "عميل",
+      "provider": "مزود خدمة",
+      "signIn": "تسجيل الدخول",
+      "signUp": "إنشاء حساب",
+      "forgotPassword": "هل نسيت كلمة المرور؟",
+      "noAccount": "ليس لديك حساب؟",
+      "hasAccount": "هل لديك حساب بالفعل؟"
+    },
+    "home": {
+      "title": "ابحث عن خدمات محلية",
+      "searchPlaceholder": "ما الخدمة التي تحتاجها؟",
+      "categories": "الفئات",
+      "topRated": "مقدمو الخدمات الأعلى تقييماً",
+      "verified": "موثق",
+      "insurance": "مؤمن"
+    },
+    "provider": {
+      "profile": "الملف الشخصي",
+      "services": "الخدمات",
+      "portfolio": "معرض الأعمال",
+      "reviews": "التقييمات",
+      "about": "حول",
+      "experience": "الخبرة",
+      "priceRange": "نطاق السعر",
+      "contactProvider": "اتصل بمقدم الخدمة",
+      "level": "المستوى",
+      "completedJobs": "الأعمال المكتملة",
+      "responseTime": "وقت الاستجابة"
+    },
+    "dashboard": {
+      "myRequests": "طلباتي",
+      "myLeads": "عملائي المحتملين",
+      "availableLeads": "العملاء المحتملين المتاحين",
+      "messages": "الرسائل",
+      "earnings": "الأرباح",
+      "stats": "الإحصائيات"
+    },
+    "filters": {
+      "rating": "الحد الأدنى للتقييم",
+      "distance": "المسافة (أميال)",
+      "verifiedOnly": "الموثقين فقط",
+      "withInsurance": "مع التأمين",
+      "priceRange": "نطاق السعر"
+    },
+    "reviews": {
+      "writeReview": "اكتب تقييماً",
+      "rating": "التقييم",
+      "comment": "تعليق",
+      "helpful": "مفيد",
+      "reportReview": "الإبلاغ عن التقييم"
+    }
+  }
+}

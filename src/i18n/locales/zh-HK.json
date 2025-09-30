@@ -1,0 +1,82 @@
+{
+  "translation": {
+    "common": {
+      "search": "搜尋",
+      "filter": "篩選",
+      "apply": "應用",
+      "cancel": "取消",
+      "save": "儲存",
+      "edit": "編輯",
+      "delete": "刪除",
+      "submit": "提交",
+      "send": "發送",
+      "back": "返回",
+      "next": "下一步",
+      "loading": "載入中...",
+      "error": "錯誤",
+      "success": "成功"
+    },
+    "auth": {
+      "login": "登入",
+      "register": "註冊",
+      "email": "電郵",
+      "password": "密碼",
+      "name": "全名",
+      "phone": "電話號碼",
+      "zipCode": "郵政編碼",
+      "city": "城市",
+      "state": "州",
+      "role": "我是",
+      "customer": "客戶",
+      "provider": "服務提供者",
+      "signIn": "登入",
+      "signUp": "註冊",
+      "forgotPassword": "忘記密碼？",
+      "noAccount": "沒有帳戶？",
+      "hasAccount": "已有帳戶？"
+    },
+    "home": {
+      "title": "尋找本地服務",
+      "searchPlaceholder": "您需要什麼服務？",
+      "categories": "類別",
+      "topRated": "最高評分服務商",
+      "verified": "已驗證",
+      "insurance": "已投保"
+    },
+    "provider": {
+      "profile": "資料",
+      "services": "服務",
+      "portfolio": "作品集",
+      "reviews": "評價",
+      "about": "關於",
+      "experience": "經驗",
+      "priceRange": "價格範圍",
+      "contactProvider": "聯絡服務商",
+      "level": "等級",
+      "completedJobs": "已完成工作",
+      "responseTime": "回應時間"
+    },
+    "dashboard": {
+      "myRequests": "我的請求",
+      "myLeads": "我的線索",
+      "availableLeads": "可用線索",
+      "messages": "訊息",
+      "earnings": "收入",
+      "stats": "統計"
+    },
+    "filters": {
+      "rating": "最低評分",
+      "distance": "距離（英里）",
+      "verifiedOnly": "僅已驗證",
+      "withInsurance": "有保險",
+      "priceRange": "價格範圍"
+    },
+    "reviews": {
+      "writeReview": "撰寫評價",
+      "rating": "評分",
+      "comment": "評論",
+      "helpful": "有幫助",
+      "reportReview": "舉報評價"
+    }
+  }
+}

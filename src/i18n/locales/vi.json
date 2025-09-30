@@ -1,0 +1,82 @@
+{
+  "translation": {
+    "common": {
+      "search": "Tìm kiếm",
+      "filter": "Lọc",
+      "apply": "Áp dụng",
+      "cancel": "Hủy",
+      "save": "Lưu",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "submit": "Gửi",
+      "send": "Gửi",
+      "back": "Quay lại",
+      "next": "Tiếp theo",
+      "loading": "Đang tải...",
+      "error": "Lỗi",
+      "success": "Thành công"
+    },
+    "auth": {
+      "login": "Đăng nhập",
+      "register": "Đăng ký",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "name": "Họ và tên",
+      "phone": "Số điện thoại",
+      "zipCode": "Mã bưu điện",
+      "city": "Thành phố",
+      "state": "Tiểu bang",
+      "role": "Tôi là",
+      "customer": "Khách hàng",
+      "provider": "Nhà cung cấp dịch vụ",
+      "signIn": "Đăng nhập",
+      "signUp": "Đăng ký",
+      "forgotPassword": "Quên mật khẩu?",
+      "noAccount": "Chưa có tài khoản?",
+      "hasAccount": "Đã có tài khoản?"
+    },
+    "home": {
+      "title": "Tìm dịch vụ địa phương",
+      "searchPlaceholder": "Bạn cần dịch vụ gì?",
+      "categories": "Danh mục",
+      "topRated": "Nhà cung cấp được đánh giá cao",
+      "verified": "Đã xác minh",
+      "insurance": "Có bảo hiểm"
+    },
+    "provider": {
+      "profile": "Hồ sơ",
+      "services": "Dịch vụ",
+      "portfolio": "Danh mục đầu tư",
+      "reviews": "Đánh giá",
+      "about": "Giới thiệu",
+      "experience": "Kinh nghiệm",
+      "priceRange": "Phạm vi giá",
+      "contactProvider": "Liên hệ nhà cung cấp",
+      "level": "Cấp độ",
+      "completedJobs": "Công việc hoàn thành",
+      "responseTime": "Thời gian phản hồi"
+    },
+    "dashboard": {
+      "myRequests": "Yêu cầu của tôi",
+      "myLeads": "Khách hàng tiềm năng của tôi",
+      "availableLeads": "Khách hàng tiềm năng có sẵn",
+      "messages": "Tin nhắn",
+      "earnings": "Thu nhập",
+      "stats": "Thống kê"
+    },
+    "filters": {
+      "rating": "Xếp hạng tối thiểu",
+      "distance": "Khoảng cách (dặm)",
+      "verifiedOnly": "Chỉ đã xác minh",
+      "withInsurance": "Có bảo hiểm",
+      "priceRange": "Phạm vi giá"
+    },
+    "reviews": {
+      "writeReview": "Viết đánh giá",
+      "rating": "Xếp hạng",
+      "comment": "Bình luận",
+      "helpful": "Hữu ích",
+      "reportReview": "Báo cáo đánh giá"
+    }
+  }
+}

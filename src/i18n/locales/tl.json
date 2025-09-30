@@ -1,0 +1,82 @@
+{
+  "translation": {
+    "common": {
+      "search": "Maghanap",
+      "filter": "I-filter",
+      "apply": "Ilapat",
+      "cancel": "Kanselahin",
+      "save": "I-save",
+      "edit": "I-edit",
+      "delete": "Tanggalin",
+      "submit": "Ipasa",
+      "send": "Ipadala",
+      "back": "Bumalik",
+      "next": "Susunod",
+      "loading": "Naglo-load...",
+      "error": "Error",
+      "success": "Tagumpay"
+    },
+    "auth": {
+      "login": "Mag-login",
+      "register": "Magrehistro",
+      "email": "Email",
+      "password": "Password",
+      "name": "Buong Pangalan",
+      "phone": "Numero ng Telepono",
+      "zipCode": "Zip Code",
+      "city": "Lungsod",
+      "state": "Estado",
+      "role": "Ako ay",
+      "customer": "Kliyente",
+      "provider": "Tagapagbigay ng Serbisyo",
+      "signIn": "Mag-sign In",
+      "signUp": "Mag-sign Up",
+      "forgotPassword": "Nakalimutan ang Password?",
+      "noAccount": "Walang account?",
+      "hasAccount": "Mayroon nang account?"
+    },
+    "home": {
+      "title": "Maghanap ng Lokal na Serbisyo",
+      "searchPlaceholder": "Anong serbisyo ang kailangan mo?",
+      "categories": "Mga Kategorya",
+      "topRated": "Pinakamataas na Rating na mga Provider",
+      "verified": "Napatunayan",
+      "insurance": "May Insurance"
+    },
+    "provider": {
+      "profile": "Profile",
+      "services": "Mga Serbisyo",
+      "portfolio": "Portfolio",
+      "reviews": "Mga Review",
+      "about": "Tungkol",
+      "experience": "Karanasan",
+      "priceRange": "Saklaw ng Presyo",
+      "contactProvider": "Makipag-ugnayan sa Provider",
+      "level": "Antas",
+      "completedJobs": "Natapos na Trabaho",
+      "responseTime": "Oras ng Pagtugon"
+    },
+    "dashboard": {
+      "myRequests": "Aking mga Kahilingan",
+      "myLeads": "Aking mga Lead",
+      "availableLeads": "Available na mga Lead",
+      "messages": "Mga Mensahe",
+      "earnings": "Kita",
+      "stats": "Estadistika"
+    },
+    "filters": {
+      "rating": "Pinakamababang Rating",
+      "distance": "Distansya (milya)",
+      "verifiedOnly": "Napatunayan Lamang",
+      "withInsurance": "May Insurance",
+      "priceRange": "Saklaw ng Presyo"
+    },
+    "reviews": {
+      "writeReview": "Sumulat ng Review",
+      "rating": "Rating",
+      "comment": "Komento",
+      "helpful": "Nakatulong",
+      "reportReview": "I-report ang Review"
+    }
+  }
+}

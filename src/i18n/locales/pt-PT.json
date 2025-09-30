@@ -1,0 +1,82 @@
+{
+  "translation": {
+    "common": {
+      "search": "Pesquisar",
+      "filter": "Filtrar",
+      "apply": "Aplicar",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "submit": "Submeter",
+      "send": "Enviar",
+      "back": "Voltar",
+      "next": "Seguinte",
+      "loading": "A carregar...",
+      "error": "Erro",
+      "success": "Sucesso"
+    },
+    "auth": {
+      "login": "Entrar",
+      "register": "Registar",
+      "email": "E-mail",
+      "password": "Palavra-passe",
+      "name": "Nome Completo",
+      "phone": "Telefone",
+      "zipCode": "Código Postal",
+      "city": "Cidade",
+      "state": "Distrito",
+      "role": "Eu sou",
+      "customer": "Cliente",
+      "provider": "Prestador de Serviços",
+      "signIn": "Entrar",
+      "signUp": "Registar",
+      "forgotPassword": "Esqueceu-se da palavra-passe?",
+      "noAccount": "Não tem uma conta?",
+      "hasAccount": "Já tem uma conta?"
+    },
+    "home": {
+      "title": "Encontre Serviços Locais",
+      "searchPlaceholder": "Que serviço necessita?",
+      "categories": "Categorias",
+      "topRated": "Prestadores Melhor Classificados",
+      "verified": "Verificado",
+      "insurance": "Segurado"
+    },
+    "provider": {
+      "profile": "Perfil",
+      "services": "Serviços",
+      "portfolio": "Portfólio",
+      "reviews": "Avaliações",
+      "about": "Sobre",
+      "experience": "Experiência",
+      "priceRange": "Intervalo de Preço",
+      "contactProvider": "Contactar Prestador",
+      "level": "Nível",
+      "completedJobs": "Trabalhos Concluídos",
+      "responseTime": "Tempo de Resposta"
+    },
+    "dashboard": {
+      "myRequests": "Os Meus Pedidos",
+      "myLeads": "Os Meus Leads",
+      "availableLeads": "Leads Disponíveis",
+      "messages": "Mensagens",
+      "earnings": "Ganhos",
+      "stats": "Estatísticas"
+    },
+    "filters": {
+      "rating": "Classificação Mínima",
+      "distance": "Distância (milhas)",
+      "verifiedOnly": "Apenas Verificados",
+      "withInsurance": "Com Seguro",
+      "priceRange": "Intervalo de Preço"
+    },
+    "reviews": {
+      "writeReview": "Escrever Avaliação",
+      "rating": "Classificação",
+      "comment": "Comentário",
+      "helpful": "Útil",
+      "reportReview": "Denunciar Avaliação"
+    }
+  }
+}

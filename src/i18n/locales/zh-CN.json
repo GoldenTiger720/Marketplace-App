@@ -1,0 +1,82 @@
+{
+  "translation": {
+    "common": {
+      "search": "搜索",
+      "filter": "筛选",
+      "apply": "应用",
+      "cancel": "取消",
+      "save": "保存",
+      "edit": "编辑",
+      "delete": "删除",
+      "submit": "提交",
+      "send": "发送",
+      "back": "返回",
+      "next": "下一步",
+      "loading": "加载中...",
+      "error": "错误",
+      "success": "成功"
+    },
+    "auth": {
+      "login": "登录",
+      "register": "注册",
+      "email": "电子邮箱",
+      "password": "密码",
+      "name": "全名",
+      "phone": "电话号码",
+      "zipCode": "邮政编码",
+      "city": "城市",
+      "state": "州",
+      "role": "我是",
+      "customer": "客户",
+      "provider": "服务提供商",
+      "signIn": "登录",
+      "signUp": "注册",
+      "forgotPassword": "忘记密码？",
+      "noAccount": "没有账户？",
+      "hasAccount": "已有账户？"
+    },
+    "home": {
+      "title": "查找本地服务",
+      "searchPlaceholder": "您需要什么服务？",
+      "categories": "类别",
+      "topRated": "最高评分服务商",
+      "verified": "已验证",
+      "insurance": "已投保"
+    },
+    "provider": {
+      "profile": "资料",
+      "services": "服务",
+      "portfolio": "作品集",
+      "reviews": "评价",
+      "about": "关于",
+      "experience": "经验",
+      "priceRange": "价格范围",
+      "contactProvider": "联系服务商",
+      "level": "等级",
+      "completedJobs": "已完成工作",
+      "responseTime": "响应时间"
+    },
+    "dashboard": {
+      "myRequests": "我的请求",
+      "myLeads": "我的线索",
+      "availableLeads": "可用线索",
+      "messages": "消息",
+      "earnings": "收入",
+      "stats": "统计"
+    },
+    "filters": {
+      "rating": "最低评分",
+      "distance": "距离（英里）",
+      "verifiedOnly": "仅已验证",
+      "withInsurance": "有保险",
+      "priceRange": "价格范围"
+    },
+    "reviews": {
+      "writeReview": "写评价",
+      "rating": "评分",
+      "comment": "评论",
+      "helpful": "有帮助",
+      "reportReview": "举报评价"
+    }
+  }
+}
