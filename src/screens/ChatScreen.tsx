@@ -23,9 +23,29 @@ interface Props {
 }
 
 export default function ChatScreen({ currentUserId, otherUser, onBack }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState<Message[]>(MOCK_MESSAGES);
   const [inputText, setInputText] = useState('');
+
+  // Simple translation mapping for demo messages
+  const translateMessage = (text: string, targetLang: string): string => {
+    if (targetLang === 'en') return text;
+
+    const translations: Record<string, Record<string, string>> = {
+      'es': {
+        'Hi, I\'m interested in your cleaning services. Are you available this weekend?':
+          'Hola, estoy interesado en sus servicios de limpieza. ¿Está disponible este fin de semana?',
+        'Hello! Yes, I have availability on Saturday. What time works best for you?':
+          '¡Hola! Sí, tengo disponibilidad el sábado. ¿Qué hora te viene mejor?',
+        'Saturday morning around 9 AM would be perfect. How much would it cost for a 3-bedroom house?':
+          'El sábado por la mañana alrededor de las 9 AM sería perfecto. ¿Cuánto costaría para una casa de 3 habitaciones?',
+        'For a 3-bedroom deep clean, I charge $200. This includes all rooms, kitchen, and bathrooms.':
+          'Para una limpieza profunda de 3 habitaciones, cobro $200. Esto incluye todas las habitaciones, cocina y baños.',
+      }
+    };
+
+    return translations[targetLang]?.[text] || text;
+  };
 
   const handleSend = () => {
     if (inputText.trim()) {
@@ -45,6 +65,8 @@ export default function ChatScreen({ currentUserId, otherUser, onBack }: Props) 
 
   const renderMessage = ({ item }: { item: Message }) => {
     const isMyMessage = item.senderId === currentUserId;
+    const displayText = translateMessage(item.text, i18n.language);
+
     return (
       <View style={[styles.messageContainer, isMyMessage ? styles.myMessage : styles.theirMessage]}>
         {!isMyMessage && (
@@ -52,7 +74,7 @@ export default function ChatScreen({ currentUserId, otherUser, onBack }: Props) 
         )}
         <View style={[styles.messageBubble, isMyMessage ? styles.myBubble : styles.theirBubble]}>
           <Text style={[styles.messageText, isMyMessage ? styles.myMessageText : styles.theirMessageText]}>
-            {item.text}
+            {displayText}
           </Text>
           <View style={styles.messageFooter}>
             <Text style={[styles.messageTime, isMyMessage ? styles.myMessageTime : styles.theirMessageTime]}>

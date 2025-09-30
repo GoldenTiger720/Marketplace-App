@@ -134,10 +134,10 @@ function CustomerTabs({ onLogout }: TabsProps) {
           ),
         }}
       >
-        {() => (
+        {(props) => (
           <CustomerProfileScreen
             customer={customer}
-            onBack={() => {}}
+            onBack={() => (props.navigation as any).navigate('Dashboard')}
             onEditProfile={() => {}}
           />
         )}

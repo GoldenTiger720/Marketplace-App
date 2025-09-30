@@ -162,7 +162,7 @@ export default function CustomerProfileScreen({ customer, onBack, onEditProfile 
   const renderRequests = () => (
     <View style={styles.tabContent}>
       {customerRequests.length === 0 ? (
-        <Text style={styles.emptyText}>No service requests yet</Text>
+        <Text style={styles.emptyText}>{t('profile.noServiceRequests')}</Text>
       ) : (
         customerRequests.map((request) => (
           <View key={request.id} style={styles.requestCard}>
@@ -207,7 +207,7 @@ export default function CustomerProfileScreen({ customer, onBack, onEditProfile 
   const renderReviews = () => (
     <View style={styles.tabContent}>
       {customerReviews.length === 0 ? (
-        <Text style={styles.emptyText}>No reviews written yet</Text>
+        <Text style={styles.emptyText}>{t('profile.noReviews')}</Text>
       ) : (
         customerReviews.map((review) => (
           <View key={review.id} style={styles.reviewCard}>
@@ -235,7 +235,7 @@ export default function CustomerProfileScreen({ customer, onBack, onEditProfile 
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#333" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Profile</Text>
+        <Text style={styles.headerTitle}>{t('provider.profile')}</Text>
         <TouchableOpacity onPress={onEditProfile} style={styles.editButton}>
           <Ionicons name="pencil" size={20} color="#667eea" />
         </TouchableOpacity>
@@ -265,19 +265,19 @@ export default function CustomerProfileScreen({ customer, onBack, onEditProfile 
           <View style={styles.statCard}>
             <Ionicons name="document-text-outline" size={28} color="#667eea" />
             <Text style={styles.statValue}>{customerRequests.length}</Text>
-            <Text style={styles.statLabel}>Total Requests</Text>
+            <Text style={styles.statLabel}>{t('profile.totalRequests')}</Text>
           </View>
           <View style={styles.statCard}>
             <Ionicons name="checkmark-done-outline" size={28} color="#4CAF50" />
             <Text style={styles.statValue}>
               {customerRequests.filter((r) => r.status === 'completed').length}
             </Text>
-            <Text style={styles.statLabel}>Completed</Text>
+            <Text style={styles.statLabel}>{t('profile.completed')}</Text>
           </View>
           <View style={styles.statCard}>
             <Ionicons name="star-outline" size={28} color="#FFD700" />
             <Text style={styles.statValue}>{customerReviews.length}</Text>
-            <Text style={styles.statLabel}>Reviews</Text>
+            <Text style={styles.statLabel}>{t('profile.reviews')}</Text>
           </View>
         </View>
 
@@ -287,7 +287,7 @@ export default function CustomerProfileScreen({ customer, onBack, onEditProfile 
             onPress={() => setSelectedTab('requests')}
           >
             <Text style={[styles.tabText, selectedTab === 'requests' && styles.tabTextActive]}>
-              My Requests ({customerRequests.length})
+              {t('profile.myRequests')} ({customerRequests.length})
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -295,7 +295,7 @@ export default function CustomerProfileScreen({ customer, onBack, onEditProfile 
             onPress={() => setSelectedTab('reviews')}
           >
             <Text style={[styles.tabText, selectedTab === 'reviews' && styles.tabTextActive]}>
-              My Reviews ({customerReviews.length})
+              {t('profile.myReviews')} ({customerReviews.length})
             </Text>
           </TouchableOpacity>
         </View>
