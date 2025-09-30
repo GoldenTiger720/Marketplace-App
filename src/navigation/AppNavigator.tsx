@@ -24,9 +24,18 @@ import { useApp } from '../contexts/AppContext';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function CustomerTabs() {
+interface TabsProps {
+  onLogout: () => void;
+}
+
+function CustomerTabs({ onLogout }: TabsProps) {
   const { t } = useTranslation();
   const { currentUser } = useApp();
+
+  if (!currentUser || currentUser.role !== 'customer') {
+    return null;
+  }
+
   const customer = currentUser as Customer;
   const navigation = useNavigation();
 
@@ -84,6 +93,8 @@ function CustomerTabs() {
             customer={customer}
             onRequestPress={() => {}}
             onCreateRequest={() => {}}
+            onLogout={onLogout}
+            onViewProfile={() => (navigation as any).navigate('CustomerProfile')}
           />
         )}
       </Tab.Screen>
@@ -125,9 +136,14 @@ function CustomerTabs() {
   );
 }
 
-function ProviderTabs() {
+function ProviderTabs({ onLogout }: TabsProps) {
   const { t } = useTranslation();
   const { currentUser } = useApp();
+
+  if (!currentUser || currentUser.role !== 'provider') {
+    return null;
+  }
+
   const provider = currentUser as Provider;
   const navigation = useNavigation();
 
@@ -169,6 +185,8 @@ function ProviderTabs() {
             provider={provider}
             onLeadPress={() => {}}
             onSubscriptionPress={() => (navigation as any).navigate('Subscription')}
+            onLogout={onLogout}
+            onViewProfile={() => {}}
           />
         )}
       </Tab.Screen>
@@ -186,6 +204,8 @@ function ProviderTabs() {
             provider={provider}
             onLeadPress={() => {}}
             onSubscriptionPress={() => (navigation as any).navigate('Subscription')}
+            onLogout={onLogout}
+            onViewProfile={() => {}}
           />
         )}
       </Tab.Screen>
@@ -247,6 +267,11 @@ export default function AppNavigator() {
     }
   };
 
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setCurrentUser(null);
+  };
+
   const handleSubscribe = (plan: SubscriptionPlan) => {
     if (currentUser && 'subscriptionPlan' in currentUser) {
       const updatedProvider = { ...currentUser, subscriptionPlan: plan };
@@ -279,10 +304,14 @@ export default function AppNavigator() {
     );
   }
 
+  if (!currentUser) {
+    return null;
+  }
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainTabs">
-        {() => (isProvider ? <ProviderTabs /> : <CustomerTabs />)}
+        {() => (isProvider ? <ProviderTabs onLogout={handleLogout} /> : <CustomerTabs onLogout={handleLogout} />)}
       </Stack.Screen>
       <Stack.Screen name="ProviderProfile">
         {(props) => (
@@ -305,7 +334,7 @@ export default function AppNavigator() {
       <Stack.Screen name="Chat">
         {(props) => (
           <ChatScreen
-            currentUserId={currentUser!.id}
+            currentUserId={currentUser.id}
             otherUser={(props.route.params as any)?.otherUser}
             onBack={() => props.navigation.goBack()}
           />

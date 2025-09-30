@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,15 +13,20 @@ import { useTranslation } from 'react-i18next';
 import { Customer, ServiceRequest } from '../types';
 import { MOCK_SERVICE_REQUESTS } from '../data/mockData';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import UserMenu from '../components/UserMenu';
+import NewRequestModal from '../components/NewRequestModal';
 
 interface Props {
   customer: Customer;
   onRequestPress: (request: ServiceRequest) => void;
   onCreateRequest: () => void;
+  onLogout: () => void;
+  onViewProfile: () => void;
 }
 
-export default function CustomerDashboardScreen({ customer, onRequestPress, onCreateRequest }: Props) {
+export default function CustomerDashboardScreen({ customer, onRequestPress, onCreateRequest, onLogout, onViewProfile }: Props) {
   const { t } = useTranslation();
+  const [showNewRequestModal, setShowNewRequestModal] = useState(false);
   const requests = MOCK_SERVICE_REQUESTS.filter((r) => r.customerId === customer.id);
 
   const getStatusColor = (status: string) => {
@@ -48,7 +53,6 @@ export default function CustomerDashboardScreen({ customer, onRequestPress, onCr
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.profileSection}>
-          <Image source={{ uri: customer.profileImage }} style={styles.avatar} />
           <View style={styles.profileInfo}>
             <Text style={styles.greeting}>Hello,</Text>
             <Text style={styles.userName}>{customer.name}</Text>
@@ -62,6 +66,11 @@ export default function CustomerDashboardScreen({ customer, onRequestPress, onCr
               <Text style={styles.notificationBadgeText}>3</Text>
             </View>
           </TouchableOpacity>
+          <UserMenu
+            user={customer}
+            onLogout={onLogout}
+            onViewProfile={onViewProfile}
+          />
         </View>
       </View>
 
@@ -87,7 +96,7 @@ export default function CustomerDashboardScreen({ customer, onRequestPress, onCr
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{t('dashboard.myRequests')}</Text>
-            <TouchableOpacity onPress={onCreateRequest}>
+            <TouchableOpacity onPress={() => setShowNewRequestModal(true)}>
               <Text style={styles.seeAll}>+ New Request</Text>
             </TouchableOpacity>
           </View>
@@ -96,7 +105,7 @@ export default function CustomerDashboardScreen({ customer, onRequestPress, onCr
             <View style={styles.emptyState}>
               <Ionicons name="document-outline" size={60} color="#ccc" />
               <Text style={styles.emptyStateText}>No service requests yet</Text>
-              <TouchableOpacity style={styles.createButton} onPress={onCreateRequest}>
+              <TouchableOpacity style={styles.createButton} onPress={() => setShowNewRequestModal(true)}>
                 <Text style={styles.createButtonText}>Create Your First Request</Text>
               </TouchableOpacity>
             </View>
@@ -166,6 +175,19 @@ export default function CustomerDashboardScreen({ customer, onRequestPress, onCr
           </View>
         </View>
       </ScrollView>
+
+      <NewRequestModal
+        visible={showNewRequestModal}
+        onClose={() => setShowNewRequestModal(false)}
+        onSubmit={(request) => {
+          setShowNewRequestModal(false);
+          // In a real app, this would create the request
+          console.log('New request:', request);
+        }}
+        userCity={customer.city}
+        userState={customer.state}
+        userZipCode={customer.zipCode}
+      />
     </SafeAreaView>
   );
 }
@@ -189,12 +211,7 @@ const styles = StyleSheet.create({
   profileSection: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
+    flex: 1,
   },
   profileInfo: {
     justifyContent: 'center',

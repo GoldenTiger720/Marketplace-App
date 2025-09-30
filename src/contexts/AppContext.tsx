@@ -3,8 +3,8 @@ import { Customer, Provider, Language } from '../types';
 import { MOCK_CUSTOMERS, MOCK_PROVIDERS } from '../data/mockData';
 
 interface AppContextType {
-  currentUser: Customer | Provider;
-  setCurrentUser: (user: Customer | Provider) => void;
+  currentUser: Customer | Provider | null;
+  setCurrentUser: (user: Customer | Provider | null) => void;
   language: Language;
   setLanguage: (lang: Language) => void;
   isProvider: boolean;
@@ -13,10 +13,10 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<Customer | Provider>(MOCK_CUSTOMERS[0]);
+  const [currentUser, setCurrentUser] = useState<Customer | Provider | null>(MOCK_CUSTOMERS[0]);
   const [language, setLanguage] = useState<Language>('en');
 
-  const isProvider = currentUser.role === 'provider';
+  const isProvider = currentUser?.role === 'provider';
 
   return (
     <AppContext.Provider

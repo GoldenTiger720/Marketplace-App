@@ -13,14 +13,17 @@ import { useTranslation } from 'react-i18next';
 import { Provider, Lead } from '../types';
 import { MOCK_LEADS } from '../data/mockData';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import UserMenu from '../components/UserMenu';
 
 interface Props {
   provider: Provider;
   onLeadPress: (lead: Lead) => void;
   onSubscriptionPress: () => void;
+  onLogout: () => void;
+  onViewProfile: () => void;
 }
 
-export default function ProviderDashboardScreen({ provider, onLeadPress, onSubscriptionPress }: Props) {
+export default function ProviderDashboardScreen({ provider, onLeadPress, onSubscriptionPress, onLogout, onViewProfile }: Props) {
   const { t } = useTranslation();
   const availableLeads = MOCK_LEADS.filter((l) => l.status === 'available');
 
@@ -37,7 +40,6 @@ export default function ProviderDashboardScreen({ provider, onLeadPress, onSubsc
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.profileSection}>
-          <Image source={{ uri: provider.profileImage }} style={styles.avatar} />
           <View style={styles.profileInfo}>
             <Text style={styles.greeting}>Welcome back,</Text>
             <Text style={styles.userName}>{provider.name}</Text>
@@ -51,6 +53,11 @@ export default function ProviderDashboardScreen({ provider, onLeadPress, onSubsc
               <Text style={styles.notificationBadgeText}>5</Text>
             </View>
           </TouchableOpacity>
+          <UserMenu
+            user={provider}
+            onLogout={onLogout}
+            onViewProfile={onViewProfile}
+          />
         </View>
       </View>
 
@@ -215,12 +222,7 @@ const styles = StyleSheet.create({
   profileSection: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
+    flex: 1,
   },
   profileInfo: {
     justifyContent: 'center',
