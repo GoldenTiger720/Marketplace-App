@@ -1,4 +1,4 @@
-import { Provider, Customer, Review, ServiceRequest, Conversation, Message, Lead, GamificationReward } from '../types';
+import { Provider, Customer, Review, ServiceRequest, Conversation, Message, Lead, GamificationReward, LeadPurchase, PaymentTransaction, PaymentMethod } from '../types';
 
 export const MOCK_PROVIDERS: Provider[] = [
   {
@@ -584,6 +584,114 @@ export const MOCK_MESSAGES: Message[] = [
     originalLanguage: 'en',
     timestamp: '2024-09-29T11:15:00Z',
     read: false,
+  },
+];
+
+export const MOCK_LEAD_PURCHASES: LeadPurchase[] = [
+  {
+    id: 'lp1',
+    providerId: 'p1',
+    packageId: 'monthly_pack',
+    leadsCount: 20,
+    totalPrice: 240,
+    purchasedAt: '2024-09-01T10:00:00Z',
+    expiresAt: '2024-10-01T10:00:00Z',
+  },
+  {
+    id: 'lp2',
+    providerId: 'p2',
+    packageId: 'weekly_pack',
+    leadsCount: 6,
+    totalPrice: 75,
+    purchasedAt: '2024-09-25T14:30:00Z',
+    expiresAt: '2024-10-02T14:30:00Z',
+  },
+  {
+    id: 'lp3',
+    providerId: 'p1',
+    packageId: 'single_lead',
+    leadsCount: 1,
+    totalPrice: 15,
+    purchasedAt: '2024-09-28T09:15:00Z',
+  },
+];
+
+export const MOCK_PAYMENT_METHODS: PaymentMethod[] = [
+  {
+    id: 'pm1',
+    type: 'card',
+    last4: '4242',
+    brand: 'Visa',
+    expiryMonth: 12,
+    expiryYear: 2027,
+    isDefault: true,
+  },
+  {
+    id: 'pm2',
+    type: 'card',
+    last4: '5555',
+    brand: 'Mastercard',
+    expiryMonth: 8,
+    expiryYear: 2026,
+    isDefault: false,
+  },
+];
+
+export const MOCK_PAYMENT_TRANSACTIONS: PaymentTransaction[] = [
+  {
+    id: 'txn1',
+    userId: 'p1',
+    amount: 240,
+    currency: 'USD',
+    type: 'lead_purchase',
+    status: 'completed',
+    paymentMethodId: 'pm1',
+    description: 'Monthly Lead Package (20 leads)',
+    createdAt: '2024-09-01T10:00:00Z',
+  },
+  {
+    id: 'txn2',
+    userId: 'p1',
+    amount: 99.99,
+    currency: 'USD',
+    type: 'subscription',
+    status: 'completed',
+    paymentMethodId: 'pm1',
+    description: 'Gold Plan Subscription - September',
+    createdAt: '2024-09-01T10:05:00Z',
+  },
+  {
+    id: 'txn3',
+    userId: 'p2',
+    amount: 75,
+    currency: 'USD',
+    type: 'lead_purchase',
+    status: 'completed',
+    paymentMethodId: 'pm1',
+    description: 'Weekly Lead Package (6 leads)',
+    createdAt: '2024-09-25T14:30:00Z',
+  },
+  {
+    id: 'txn4',
+    userId: 'p2',
+    amount: 25,
+    currency: 'USD',
+    type: 'verification',
+    status: 'completed',
+    paymentMethodId: 'pm1',
+    description: 'Verification Badge - Monthly Fee',
+    createdAt: '2024-09-01T08:00:00Z',
+  },
+  {
+    id: 'txn5',
+    userId: 'p1',
+    amount: 15,
+    currency: 'USD',
+    type: 'lead_purchase',
+    status: 'completed',
+    paymentMethodId: 'pm1',
+    description: 'Single Lead Purchase',
+    createdAt: '2024-09-28T09:15:00Z',
   },
 ];
 

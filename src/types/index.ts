@@ -160,3 +160,55 @@ export interface FilterOptions {
 }
 
 export type Language = 'en' | 'pt-BR' | 'pt-PT' | 'es' | 'zh-CN' | 'zh-HK' | 'tl' | 'ar' | 'vi';
+
+export interface LeadPackage {
+  id: string;
+  name: string;
+  leadsCount: number;
+  price: number;
+  duration: 'single' | 'weekly' | 'monthly';
+  savingsPercentage?: number;
+}
+
+export interface LeadPurchase {
+  id: string;
+  providerId: string;
+  packageId: string;
+  leadsCount: number;
+  totalPrice: number;
+  purchasedAt: string;
+  expiresAt?: string;
+}
+
+export interface SubscriptionFeatures {
+  featuredTimesPerWeek: number;
+  priorityInSearch: boolean;
+  highlightedProfile: boolean;
+  analyticsAccess: boolean;
+  customerSupportLevel: 'basic' | 'priority' | 'premium';
+  price: number;
+}
+
+export interface PaymentMethod {
+  id: string;
+  type: 'card' | 'bank_account';
+  last4: string;
+  brand?: string;
+  expiryMonth?: number;
+  expiryYear?: number;
+  isDefault: boolean;
+}
+
+export interface PaymentTransaction {
+  id: string;
+  userId: string;
+  amount: number;
+  currency: 'USD';
+  type: 'lead_purchase' | 'subscription' | 'verification';
+  status: 'pending' | 'completed' | 'failed' | 'refunded';
+  paymentMethodId: string;
+  description: string;
+  createdAt: string;
+}
+
+export type PaymentGateway = 'stripe' | 'braintree';

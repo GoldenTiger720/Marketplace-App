@@ -24,9 +24,10 @@ interface Props {
   onLogout: () => void;
   onViewProfile: () => void;
   onVerificationPress?: () => void;
+  onPurchaseLeads?: () => void;
 }
 
-export default function ProviderDashboardScreen({ provider, onLeadPress, onSubscriptionPress, onLogout, onViewProfile, onVerificationPress }: Props) {
+export default function ProviderDashboardScreen({ provider, onLeadPress, onSubscriptionPress, onLogout, onViewProfile, onVerificationPress, onPurchaseLeads }: Props) {
   const { t } = useTranslation();
   const availableLeads = MOCK_LEADS.filter((l) => l.status === 'available');
   const currentLevel = getProviderLevel(provider.rating);
@@ -146,11 +147,15 @@ export default function ProviderDashboardScreen({ provider, onLeadPress, onSubsc
 
         {/* Stats */}
         <View style={styles.statsContainer}>
-          <View style={styles.statCard}>
+          <TouchableOpacity style={styles.statCard} onPress={onPurchaseLeads}>
             <Ionicons name="briefcase-outline" size={32} color="#667eea" />
             <Text style={styles.statValue}>{provider.availableLeads}</Text>
             <Text style={styles.statLabel}>Available Leads</Text>
-          </View>
+            <View style={styles.statAction}>
+              <Ionicons name="add-circle" size={20} color="#667eea" />
+              <Text style={styles.statActionText}>Buy More</Text>
+            </View>
+          </TouchableOpacity>
           <View style={styles.statCard}>
             <Ionicons name="checkmark-done-outline" size={32} color="#4CAF50" />
             <Text style={styles.statValue}>{provider.completedJobs}</Text>
@@ -491,6 +496,17 @@ const styles = StyleSheet.create({
     color: '#999',
     marginTop: 4,
     textAlign: 'center',
+  },
+  statAction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    gap: 4,
+  },
+  statActionText: {
+    fontSize: 11,
+    color: '#667eea',
+    fontWeight: '600',
   },
   revenueCard: {
     backgroundColor: 'white',

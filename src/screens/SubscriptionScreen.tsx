@@ -11,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import { SubscriptionPlan } from '../types';
+import { SUBSCRIPTION_FEATURES, formatCurrency } from '../utils/pricingUtils';
 
 interface Props {
   currentPlan: SubscriptionPlan;
@@ -33,11 +34,11 @@ export default function SubscriptionScreen({ currentPlan, onBack, onSubscribe }:
 
   const plans: Record<SubscriptionPlan, PlanDetails> = {
     none: {
-      name: 'Basic',
+      name: 'Free Plan',
       price: 0,
       features: [
         'Access to all service requests',
-        'Pay per lead',
+        'Pay per lead ($15 each)',
         'Basic profile listing',
         'Email support',
       ],
@@ -46,27 +47,26 @@ export default function SubscriptionScreen({ currentPlan, onBack, onSubscribe }:
     },
     bronze: {
       name: 'Bronze',
-      price: 29,
+      price: SUBSCRIPTION_FEATURES.bronze?.price || 29.99,
       features: [
-        'All Basic features',
-        'Featured twice a week',
-        '10% discount on leads',
-        'Priority support',
-        'Performance analytics',
+        'All Free Plan features',
+        '✨ Profile featured 2x per week',
+        'Highlighted profile badge',
+        'Basic customer support',
+        'Pay-per-lead pricing',
       ],
       color: ['#CD7F32', '#8B5A2B'],
       icon: 'medal-outline',
     },
     silver: {
       name: 'Silver',
-      price: 59,
+      price: SUBSCRIPTION_FEATURES.silver?.price || 59.99,
       features: [
         'All Bronze features',
-        'Featured 4 times a week',
-        '20% discount on leads',
-        'Advanced analytics',
-        'Custom profile badge',
-        '24/7 support',
+        '✨ Profile featured 4x per week',
+        '⚡ Priority in search results',
+        'Analytics dashboard access',
+        'Priority customer support',
       ],
       color: ['#C0C0C0', '#A8A8A8'],
       icon: 'trophy-outline',
@@ -74,15 +74,14 @@ export default function SubscriptionScreen({ currentPlan, onBack, onSubscribe }:
     },
     gold: {
       name: 'Gold',
-      price: 99,
+      price: SUBSCRIPTION_FEATURES.gold?.price || 99.99,
       features: [
         'All Silver features',
-        'Featured daily',
-        '30% discount on leads',
-        '5 free leads per month',
-        'Premium badge',
+        '✨ Profile featured DAILY',
+        '⚡ Maximum visibility boost',
+        'Advanced analytics dashboard',
+        'Premium customer support',
         'Dedicated account manager',
-        'Early access to new features',
       ],
       color: ['#FFD700', '#FFA500'],
       icon: 'star-outline',

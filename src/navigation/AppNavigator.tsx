@@ -19,6 +19,8 @@ import InsuranceUploadScreen from '../screens/InsuranceUploadScreen';
 import VerificationPaymentScreen from '../screens/VerificationPaymentScreen';
 import SubmitReviewScreen from '../screens/SubmitReviewScreen';
 import DisputeReviewScreen from '../screens/DisputeReviewScreen';
+import LeadPurchaseScreen from '../screens/LeadPurchaseScreen';
+import PaymentProcessingScreen from '../screens/PaymentProcessingScreen';
 
 // Types and Data
 import { Provider, Customer, ServiceRequest, Lead, SubscriptionPlan } from '../types';
@@ -191,6 +193,8 @@ function ProviderTabs({ onLogout }: TabsProps) {
             onSubscriptionPress={() => (navigation as any).navigate('Subscription')}
             onLogout={onLogout}
             onViewProfile={() => {}}
+            onVerificationPress={() => (navigation as any).navigate('InsuranceUpload')}
+            onPurchaseLeads={() => (navigation as any).navigate('LeadPurchase')}
           />
         )}
       </Tab.Screen>
@@ -211,6 +215,7 @@ function ProviderTabs({ onLogout }: TabsProps) {
             onLogout={onLogout}
             onViewProfile={() => {}}
             onVerificationPress={() => (navigation as any).navigate('InsuranceUpload')}
+            onPurchaseLeads={() => (navigation as any).navigate('LeadPurchase')}
           />
         )}
       </Tab.Screen>
@@ -410,6 +415,55 @@ export default function AppNavigator() {
               // In real app, submit dispute to backend
               console.log('Dispute submitted:', { description, attachments });
               props.navigation.goBack();
+            }}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="LeadPurchase">
+        {(props) => (
+          <LeadPurchaseScreen
+            onBack={() => props.navigation.goBack()}
+            currentLeads={
+              currentUser && 'availableLeads' in currentUser
+                ? currentUser.availableLeads
+                : 0
+            }
+            onPurchase={(packageItem) => {
+              // Navigate to payment processing
+              (props.navigation as any).navigate('PaymentProcessing', {
+                amount: packageItem.price,
+                description: `${packageItem.name} - ${packageItem.leadsCount} lead${packageItem.leadsCount > 1 ? 's' : ''}`,
+                paymentType: 'lead_purchase',
+                onSuccess: () => {
+                  // Update provider leads count
+                  if (currentUser && 'availableLeads' in currentUser) {
+                    const updatedProvider = {
+                      ...currentUser,
+                      availableLeads: currentUser.availableLeads + packageItem.leadsCount,
+                    };
+                    setCurrentUser(updatedProvider);
+                  }
+                  props.navigation.navigate('MainTabs' as never);
+                },
+              });
+            }}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="PaymentProcessing">
+        {(props) => (
+          <PaymentProcessingScreen
+            onBack={() => props.navigation.goBack()}
+            amount={(props.route.params as any)?.amount || 0}
+            description={(props.route.params as any)?.description || ''}
+            paymentType={(props.route.params as any)?.paymentType || 'lead_purchase'}
+            onComplete={() => {
+              const onSuccess = (props.route.params as any)?.onSuccess;
+              if (onSuccess) {
+                onSuccess();
+              } else {
+                props.navigation.navigate('MainTabs' as never);
+              }
             }}
           />
         )}
