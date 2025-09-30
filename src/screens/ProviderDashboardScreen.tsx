@@ -11,9 +11,10 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { Provider, Lead } from '../types';
-import { MOCK_LEADS } from '../data/mockData';
+import { MOCK_LEADS, MOCK_REVIEWS } from '../data/mockData';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import UserMenu from '../components/UserMenu';
+import GamificationCard from '../components/GamificationCard';
 import { getProviderLevel, VERIFICATION_FEE } from '../utils/providerUtils';
 
 interface Props {
@@ -117,6 +118,13 @@ export default function ProviderDashboardScreen({ provider, onLeadPress, onSubsc
             </View>
           )}
         </View>
+
+        {/* Gamification Rewards */}
+        <GamificationCard
+          providerId={provider.id}
+          reviews={MOCK_REVIEWS}
+          currentBonusLeads={provider.bonusLeads}
+        />
 
         {/* Subscription Status */}
         <TouchableOpacity style={styles.subscriptionCard} onPress={onSubscriptionPress}>

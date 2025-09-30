@@ -1,4 +1,4 @@
-import { Provider, Customer, Review, ServiceRequest, Conversation, Message, Lead } from '../types';
+import { Provider, Customer, Review, ServiceRequest, Conversation, Message, Lead, GamificationReward } from '../types';
 
 export const MOCK_PROVIDERS: Provider[] = [
   {
@@ -38,6 +38,8 @@ export const MOCK_PROVIDERS: Provider[] = [
     subscriptionPlan: 'gold',
     availableLeads: 25,
     completedJobs: 342,
+    bonusLeads: 2,
+    customerRating: 4.9,
     createdAt: '2023-01-15T10:00:00Z',
   },
   {
@@ -73,6 +75,8 @@ export const MOCK_PROVIDERS: Provider[] = [
     subscriptionPlan: 'silver',
     availableLeads: 15,
     completedJobs: 234,
+    bonusLeads: 5,
+    customerRating: 5.0,
     createdAt: '2023-03-20T10:00:00Z',
   },
   {
@@ -110,6 +114,8 @@ export const MOCK_PROVIDERS: Provider[] = [
     subscriptionPlan: 'gold',
     availableLeads: 30,
     completedJobs: 456,
+    bonusLeads: 0,
+    customerRating: 4.8,
     createdAt: '2022-11-10T10:00:00Z',
   },
   {
@@ -146,6 +152,8 @@ export const MOCK_PROVIDERS: Provider[] = [
     subscriptionPlan: 'bronze',
     availableLeads: 10,
     completedJobs: 189,
+    bonusLeads: 0,
+    customerRating: 4.5,
     createdAt: '2023-05-12T10:00:00Z',
   },
   {
@@ -188,6 +196,8 @@ export const MOCK_PROVIDERS: Provider[] = [
     subscriptionPlan: 'silver',
     availableLeads: 18,
     completedJobs: 278,
+    bonusLeads: 2,
+    customerRating: 4.6,
     createdAt: '2022-08-05T10:00:00Z',
   },
   {
@@ -220,6 +230,8 @@ export const MOCK_PROVIDERS: Provider[] = [
     subscriptionPlan: 'none',
     availableLeads: 3,
     completedJobs: 67,
+    bonusLeads: 0,
+    customerRating: 3.5,
     createdAt: '2024-02-01T10:00:00Z',
   },
 ];
@@ -265,6 +277,7 @@ export const MOCK_REVIEWS: Review[] = [
     createdAt: '2024-09-15T14:30:00Z',
     serviceType: 'House Cleaning',
     disputed: false,
+    reviewerType: 'customer' as const,
   },
   {
     id: 'r2',
@@ -278,6 +291,7 @@ export const MOCK_REVIEWS: Review[] = [
     serviceType: 'Carpet Cleaning',
     providerResponse: 'Thank you so much for your kind words! We appreciate your business.',
     disputed: false,
+    reviewerType: 'customer' as const,
   },
   {
     id: 'r2b',
@@ -290,6 +304,7 @@ export const MOCK_REVIEWS: Review[] = [
     createdAt: '2024-09-08T13:20:00Z',
     serviceType: 'Window Cleaning',
     disputed: false,
+    reviewerType: 'customer' as const,
   },
   {
     id: 'r3',
@@ -302,6 +317,7 @@ export const MOCK_REVIEWS: Review[] = [
     createdAt: '2024-09-20T16:45:00Z',
     serviceType: 'Plumbing',
     disputed: false,
+    reviewerType: 'customer' as const,
   },
   {
     id: 'r3b',
@@ -315,6 +331,7 @@ export const MOCK_REVIEWS: Review[] = [
     serviceType: 'Bathroom Remodeling',
     providerResponse: 'Thank you! It was a pleasure working with you on this project.',
     disputed: false,
+    reviewerType: 'customer' as const,
   },
   {
     id: 'r4',
@@ -327,6 +344,7 @@ export const MOCK_REVIEWS: Review[] = [
     createdAt: '2024-09-18T11:20:00Z',
     serviceType: 'Electrical Work',
     disputed: false,
+    reviewerType: 'customer' as const,
   },
   {
     id: 'r4b',
@@ -339,6 +357,7 @@ export const MOCK_REVIEWS: Review[] = [
     createdAt: '2024-09-12T14:30:00Z',
     serviceType: 'Electrical Work',
     disputed: false,
+    reviewerType: 'customer' as const,
   },
   {
     id: 'r5',
@@ -351,6 +370,7 @@ export const MOCK_REVIEWS: Review[] = [
     createdAt: '2024-09-14T10:30:00Z',
     serviceType: 'Landscaping',
     disputed: false,
+    reviewerType: 'customer' as const,
   },
   {
     id: 'r5b',
@@ -363,6 +383,7 @@ export const MOCK_REVIEWS: Review[] = [
     createdAt: '2024-09-07T09:15:00Z',
     serviceType: 'Lawn Care',
     disputed: false,
+    reviewerType: 'customer' as const,
   },
   {
     id: 'r6',
@@ -376,6 +397,7 @@ export const MOCK_REVIEWS: Review[] = [
     serviceType: 'Deck Building',
     providerResponse: 'Thank you! Enjoy your new deck!',
     disputed: false,
+    reviewerType: 'customer' as const,
   },
   {
     id: 'r6b',
@@ -388,6 +410,7 @@ export const MOCK_REVIEWS: Review[] = [
     createdAt: '2024-09-03T12:20:00Z',
     serviceType: 'Kitchen Remodeling',
     disputed: false,
+    reviewerType: 'customer' as const,
   },
   {
     id: 'r7',
@@ -400,6 +423,84 @@ export const MOCK_REVIEWS: Review[] = [
     createdAt: '2024-09-22T09:30:00Z',
     serviceType: 'Dog Walking',
     disputed: false,
+    reviewerType: 'customer' as const,
+  },
+  // Provider reviews of customers (no comments, just ratings)
+  {
+    id: 'pr1',
+    providerId: 'p1',
+    customerId: 'c1',
+    customerName: 'Emily Wilson',
+    customerImage: 'https://i.pravatar.cc/150?img=25',
+    rating: 5,
+    comment: '',
+    createdAt: '2024-09-16T10:00:00Z',
+    serviceType: 'House Cleaning',
+    disputed: false,
+    reviewerType: 'provider' as const,
+  },
+  {
+    id: 'pr2',
+    providerId: 'p2',
+    customerId: 'c1',
+    customerName: 'Emily Wilson',
+    customerImage: 'https://i.pravatar.cc/150?img=25',
+    rating: 5,
+    comment: '',
+    createdAt: '2024-09-12T11:00:00Z',
+    serviceType: 'Plumbing',
+    disputed: false,
+    reviewerType: 'provider' as const,
+  },
+  {
+    id: 'pr3',
+    providerId: 'p1',
+    customerId: 'c2',
+    customerName: 'Robert Taylor',
+    customerImage: 'https://i.pravatar.cc/150?img=68',
+    rating: 5,
+    comment: '',
+    createdAt: '2024-09-11T14:30:00Z',
+    serviceType: 'Carpet Cleaning',
+    disputed: false,
+    reviewerType: 'provider' as const,
+  },
+  {
+    id: 'pr4',
+    providerId: 'p6',
+    customerId: 'c2',
+    customerName: 'Robert Taylor',
+    customerImage: 'https://i.pravatar.cc/150?img=68',
+    rating: 3,
+    comment: '',
+    createdAt: '2024-09-23T09:00:00Z',
+    serviceType: 'Dog Walking',
+    disputed: false,
+    reviewerType: 'provider' as const,
+  },
+];
+
+export const MOCK_GAMIFICATION_REWARDS: GamificationReward[] = [
+  {
+    id: 'gam1',
+    providerId: 'p1',
+    rewardType: '7reviews_4stars',
+    bonusLeads: 2,
+    awardedAt: '2024-09-20T10:00:00Z',
+  },
+  {
+    id: 'gam2',
+    providerId: 'p2',
+    rewardType: '10reviews_5stars',
+    bonusLeads: 5,
+    awardedAt: '2024-09-22T15:30:00Z',
+  },
+  {
+    id: 'gam3',
+    providerId: 'p5',
+    rewardType: '7reviews_4stars',
+    bonusLeads: 2,
+    awardedAt: '2024-09-18T12:00:00Z',
   },
 ];
 

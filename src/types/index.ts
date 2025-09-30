@@ -36,11 +36,15 @@ export interface Provider extends User {
   subscriptionPlan: SubscriptionPlan;
   availableLeads: number;
   completedJobs: number;
+  bonusLeads: number;
+  customerRating?: number;
 }
 
 export interface Customer extends User {
   role: 'customer';
   requestsCount: number;
+  rating?: number;
+  reviewCount?: number;
 }
 
 export interface Service {
@@ -80,6 +84,34 @@ export interface Review {
   serviceType: string;
   providerResponse?: string;
   disputed: boolean;
+  disputeEvidence?: DisputeEvidence;
+  reviewerType: 'customer' | 'provider';
+}
+
+export interface DisputeEvidence {
+  id: string;
+  reviewId: string;
+  providerId: string;
+  description: string;
+  attachments: DisputeAttachment[];
+  status: 'pending' | 'approved' | 'rejected';
+  submittedAt: string;
+}
+
+export interface DisputeAttachment {
+  id: string;
+  type: 'message' | 'audio' | 'image' | 'document';
+  fileName: string;
+  fileUrl: string;
+}
+
+export interface GamificationReward {
+  id: string;
+  providerId: string;
+  rewardType: '7reviews_4stars' | '10reviews_5stars';
+  bonusLeads: number;
+  awardedAt: string;
+  expiresAt?: string;
 }
 
 export interface Message {

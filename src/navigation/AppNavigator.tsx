@@ -17,6 +17,8 @@ import ProviderDashboardScreen from '../screens/ProviderDashboardScreen';
 import SubscriptionScreen from '../screens/SubscriptionScreen';
 import InsuranceUploadScreen from '../screens/InsuranceUploadScreen';
 import VerificationPaymentScreen from '../screens/VerificationPaymentScreen';
+import SubmitReviewScreen from '../screens/SubmitReviewScreen';
+import DisputeReviewScreen from '../screens/DisputeReviewScreen';
 
 // Types and Data
 import { Provider, Customer, ServiceRequest, Lead, SubscriptionPlan } from '../types';
@@ -381,6 +383,33 @@ export default function AppNavigator() {
                 setCurrentUser(updatedProvider);
               }
               props.navigation.navigate('MainTabs' as never);
+            }}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="SubmitReview">
+        {(props) => (
+          <SubmitReviewScreen
+            onBack={() => props.navigation.goBack()}
+            reviewee={(props.route.params as any)?.reviewee}
+            isProviderReviewing={(props.route.params as any)?.isProviderReviewing || false}
+            onSubmit={(rating, comment) => {
+              // In real app, save review to backend
+              console.log('Review submitted:', { rating, comment });
+              props.navigation.goBack();
+            }}
+          />
+        )}
+      </Stack.Screen>
+      <Stack.Screen name="DisputeReview">
+        {(props) => (
+          <DisputeReviewScreen
+            onBack={() => props.navigation.goBack()}
+            review={(props.route.params as any)?.review}
+            onSubmit={(description, attachments) => {
+              // In real app, submit dispute to backend
+              console.log('Dispute submitted:', { description, attachments });
+              props.navigation.goBack();
             }}
           />
         )}
