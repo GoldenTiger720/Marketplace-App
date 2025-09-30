@@ -8,9 +8,13 @@ import {
   ScrollView,
   Image,
   Dimensions,
+  Alert,
+  ActionSheetIOS,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import * as ImagePicker from 'expo-image-picker';
 import { Provider, Review } from '../types';
 import { MOCK_REVIEWS } from '../data/mockData';
 import { getProviderLevel, getLevelBadgeColor, getLevelBadgeText } from '../utils/providerUtils';
@@ -26,7 +30,77 @@ interface Props {
 export default function ProviderProfileScreen({ provider, onBack, onContactPress }: Props) {
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState<'about' | 'portfolio' | 'reviews'>('about');
+  const [profileImage, setProfileImage] = useState(provider.profileImage);
   const reviews = MOCK_REVIEWS.filter((r) => r.providerId === provider.id);
+
+  const handleChangeAvatar = async () => {
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: [t('common.cancel'), t('profile.takePhoto'), t('profile.choosePhoto')],
+          cancelButtonIndex: 0,
+        },
+        async (buttonIndex) => {
+          if (buttonIndex === 1) {
+            await takePhoto();
+          } else if (buttonIndex === 2) {
+            await choosePhoto();
+          }
+        }
+      );
+    } else {
+      Alert.alert(
+        t('profile.changeAvatar'),
+        '',
+        [
+          { text: t('common.cancel'), style: 'cancel' },
+          { text: t('profile.takePhoto'), onPress: takePhoto },
+          { text: t('profile.choosePhoto'), onPress: choosePhoto },
+        ],
+        { cancelable: true }
+      );
+    }
+  };
+
+  const takePhoto = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission required', 'Camera permission is required to take photos');
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      setProfileImage(result.assets[0].uri);
+      // In a real app, upload to server here
+    }
+  };
+
+  const choosePhoto = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission required', 'Photo library permission is required');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      setProfileImage(result.assets[0].uri);
+      // In a real app, upload to server here
+    }
+  };
 
   const renderStars = (rating: number) => {
     return (
@@ -154,7 +228,12 @@ export default function ProviderProfileScreen({ provider, onBack, onContactPress
 
       <ScrollView>
         <View style={styles.profileHeader}>
-          <Image source={{ uri: provider.profileImage }} style={styles.profileImage} />
+          <TouchableOpacity onPress={handleChangeAvatar} style={styles.profileImageContainer}>
+            <Image source={{ uri: profileImage || provider.profileImage }} style={styles.profileImage} />
+            <View style={styles.cameraIconContainer}>
+              <Ionicons name="camera" size={20} color="white" />
+            </View>
+          </TouchableOpacity>
           <Text style={styles.businessName}>{provider.businessName}</Text>
           <Text style={styles.ownerName}>{provider.name}</Text>
 
@@ -268,11 +347,27 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
+  profileImageContainer: {
+    position: 'relative',
+    marginBottom: 15,
+  },
   profileImage: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    marginBottom: 15,
+  },
+  cameraIconContainer: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: '#667eea',
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: 'white',
   },
   businessName: {
     fontSize: 24,

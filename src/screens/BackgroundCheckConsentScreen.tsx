@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   onBack: () => void;
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props) {
+  const { t } = useTranslation();
   const [fullLegalName, setFullLegalName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [socialSecurityNumber, setSocialSecurityNumber] = useState('');
@@ -46,27 +48,27 @@ export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props
 
   const handleSubmit = () => {
     if (!fullLegalName || !dateOfBirth || !socialSecurityNumber) {
-      Alert.alert('Required Fields', 'Please fill in all required fields.');
+      Alert.alert(t('backgroundCheck.requiredFields'), t('backgroundCheck.requiredFieldsMessage'));
       return;
     }
 
     if (!agreedToConsent || !agreedToTerms) {
-      Alert.alert('Consent Required', 'You must agree to the background check consent and terms of service to continue.');
+      Alert.alert(t('backgroundCheck.consentRequired'), t('backgroundCheck.consentRequiredMessage'));
       return;
     }
 
     if (socialSecurityNumber.replace(/\D/g, '').length !== 9) {
-      Alert.alert('Invalid SSN', 'Please enter a valid 9-digit Social Security Number.');
+      Alert.alert(t('backgroundCheck.invalidSSN'), t('backgroundCheck.invalidSSNMessage'));
       return;
     }
 
     Alert.alert(
-      'Confirm Submission',
-      'By submitting, you authorize us to conduct a comprehensive criminal background check. This cannot be undone.',
+      t('backgroundCheck.confirmSubmission'),
+      t('backgroundCheck.confirmMessage'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'I Authorize',
+          text: t('backgroundCheck.authorize'),
           onPress: () => {
             onSubmit({
               fullLegalName,
@@ -86,7 +88,7 @@ export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#333" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Background Check</Text>
+        <Text style={styles.headerTitle}>{t('backgroundCheck.title')}</Text>
         <View style={styles.headerRight} />
       </View>
 
@@ -99,67 +101,67 @@ export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props
             end={{ x: 1, y: 1 }}
           >
             <Ionicons name="shield-checkmark" size={48} color="white" />
-            <Text style={styles.securityTitle}>Criminal Background Check</Text>
+            <Text style={styles.securityTitle}>{t('backgroundCheck.consent')}</Text>
             <Text style={styles.securitySubtitle}>
-              Required for all service providers
+              {t('backgroundCheck.requiredForProviders')}
             </Text>
           </LinearGradient>
         </View>
 
         <View style={styles.infoCard}>
-          <Text style={styles.infoTitle}>Why This is Required</Text>
+          <Text style={styles.infoTitle}>{t('backgroundCheck.whyRequired')}</Text>
           <Text style={styles.infoText}>
-            To ensure the safety of our customers, all service providers must complete a comprehensive criminal background check before their profile can be activated on the platform.
+            {t('backgroundCheck.whyRequiredText')}
           </Text>
         </View>
 
         <View style={styles.checksCard}>
-          <Text style={styles.checksTitle}>What We Check</Text>
+          <Text style={styles.checksTitle}>{t('backgroundCheck.whatWeCheck')}</Text>
           <View style={styles.checkItem}>
             <Ionicons name="search" size={20} color="#F44336" />
             <Text style={styles.checkText}>
-              <Text style={styles.checkBold}>Criminal Records:</Text> County, state, and federal databases
+              <Text style={styles.checkBold}>{t('backgroundCheck.criminalRecords')}</Text> {t('backgroundCheck.criminalRecordsDesc')}
             </Text>
           </View>
           <View style={styles.checkItem}>
             <Ionicons name="alert-circle" size={20} color="#F44336" />
             <Text style={styles.checkText}>
-              <Text style={styles.checkBold}>Sex Offender Registry:</Text> National and state registries
+              <Text style={styles.checkBold}>{t('backgroundCheck.sexOffenderRegistry')}</Text> {t('backgroundCheck.sexOffenderRegistryDesc')}
             </Text>
           </View>
           <View style={styles.checkItem}>
             <Ionicons name="shield-checkmark" size={20} color="#F44336" />
             <Text style={styles.checkText}>
-              <Text style={styles.checkBold}>Special Focus:</Text> Sex crimes, pedophilia, violent offenses
+              <Text style={styles.checkBold}>{t('backgroundCheck.specialFocus')}</Text> {t('backgroundCheck.specialFocusDesc')}
             </Text>
           </View>
           <View style={styles.checkItem}>
             <Ionicons name="document-text" size={20} color="#2196F3" />
             <Text style={styles.checkText}>
-              <Text style={styles.checkBold}>Identity Verification:</Text> Validate your identity
+              <Text style={styles.checkBold}>{t('backgroundCheck.identityVerification')}</Text> {t('backgroundCheck.identityVerificationDesc')}
             </Text>
           </View>
           <View style={styles.checkItem}>
             <Ionicons name="globe" size={20} color="#2196F3" />
             <Text style={styles.checkText}>
-              <Text style={styles.checkBold}>National Database:</Text> Comprehensive nationwide search
+              <Text style={styles.checkBold}>{t('backgroundCheck.nationalDatabase')}</Text> {t('backgroundCheck.nationalDatabaseDesc')}
             </Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Personal Information</Text>
+          <Text style={styles.sectionTitle}>{t('backgroundCheck.personalInfo')}</Text>
           <Text style={styles.sectionSubtitle}>
-            This information is required for the background check and will be kept confidential
+            {t('backgroundCheck.personalInfoDesc')}
           </Text>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>Full Legal Name *</Text>
+            <Text style={styles.inputLabel}>{t('backgroundCheck.fullLegalName')} *</Text>
             <View style={styles.inputWrapper}>
               <Ionicons name="person-outline" size={20} color="#999" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
-                placeholder="First Middle Last"
+                placeholder={t('backgroundCheck.namePlaceholder')}
                 value={fullLegalName}
                 onChangeText={setFullLegalName}
                 autoCapitalize="words"
@@ -168,12 +170,12 @@ export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>Date of Birth *</Text>
+            <Text style={styles.inputLabel}>{t('backgroundCheck.dateOfBirth')} *</Text>
             <View style={styles.inputWrapper}>
               <Ionicons name="calendar-outline" size={20} color="#999" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
-                placeholder="MM/DD/YYYY"
+                placeholder={t('backgroundCheck.dateOfBirthPlaceholder')}
                 value={dateOfBirth}
                 onChangeText={(text) => setDateOfBirth(formatDateOfBirth(text))}
                 keyboardType="number-pad"
@@ -183,12 +185,12 @@ export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>Social Security Number *</Text>
+            <Text style={styles.inputLabel}>{t('backgroundCheck.ssn')} *</Text>
             <View style={styles.inputWrapper}>
               <Ionicons name="lock-closed-outline" size={20} color="#999" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
-                placeholder="XXX-XX-XXXX"
+                placeholder={t('backgroundCheck.ssnPlaceholder')}
                 value={socialSecurityNumber}
                 onChangeText={(text) => setSocialSecurityNumber(formatSSN(text))}
                 keyboardType="number-pad"
@@ -197,17 +199,17 @@ export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props
               />
             </View>
             <Text style={styles.inputHelp}>
-              Encrypted and stored securely. Required by law for background checks.
+              {t('backgroundCheck.ssnHelp')}
             </Text>
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>Driver's License Number (Optional)</Text>
+            <Text style={styles.inputLabel}>{t('backgroundCheck.driversLicense')}</Text>
             <View style={styles.inputWrapper}>
               <Ionicons name="card-outline" size={20} color="#999" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
-                placeholder="License Number"
+                placeholder={t('backgroundCheck.licensePlaceholder')}
                 value={driversLicenseNumber}
                 onChangeText={setDriversLicenseNumber}
                 autoCapitalize="characters"
@@ -217,7 +219,7 @@ export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props
         </View>
 
         <View style={styles.consentSection}>
-          <Text style={styles.consentTitle}>Required Consent</Text>
+          <Text style={styles.consentTitle}>{t('backgroundCheck.requiredConsent')}</Text>
 
           <TouchableOpacity
             style={styles.checkboxContainer}
@@ -227,7 +229,7 @@ export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props
               {agreedToConsent && <Ionicons name="checkmark" size={18} color="white" />}
             </View>
             <Text style={styles.checkboxText}>
-              I authorize the platform to conduct a comprehensive criminal background check, including searches of criminal records, sex offender registries, and identity verification.
+              {t('backgroundCheck.consentAuthorize')}
             </Text>
           </TouchableOpacity>
 
@@ -239,7 +241,7 @@ export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props
               {agreedToTerms && <Ionicons name="checkmark" size={18} color="white" />}
             </View>
             <Text style={styles.checkboxText}>
-              I agree to the Terms of Service and understand that my profile will not be activated until the background check is completed and cleared.
+              {t('backgroundCheck.consentTerms')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -247,12 +249,9 @@ export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props
         <View style={styles.warningCard}>
           <Ionicons name="warning" size={24} color="#FF9800" />
           <View style={styles.warningContent}>
-            <Text style={styles.warningTitle}>Important Notice</Text>
+            <Text style={styles.warningTitle}>{t('backgroundCheck.importantNotice')}</Text>
             <Text style={styles.warningText}>
-              • Background checks typically take 3-5 business days{'\n'}
-              • You will be notified via email when results are ready{'\n'}
-              • Your profile will remain inactive until clearance{'\n'}
-              • Providing false information may result in permanent ban
+              {t('backgroundCheck.noticePoints')}
             </Text>
           </View>
         </View>
@@ -277,7 +276,7 @@ export default function BackgroundCheckConsentScreen({ onBack, onSubmit }: Props
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
           >
-            <Text style={styles.submitButtonText}>Submit for Background Check</Text>
+            <Text style={styles.submitButtonText}>{t('backgroundCheck.submitButton')}</Text>
             <Ionicons name="arrow-forward" size={20} color="white" />
           </LinearGradient>
         </TouchableOpacity>

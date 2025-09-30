@@ -150,21 +150,21 @@ export default function ProviderDashboardScreen({ provider, onLeadPress, onSubsc
           <TouchableOpacity style={styles.statCard} onPress={onPurchaseLeads}>
             <Ionicons name="briefcase-outline" size={32} color="#667eea" />
             <Text style={styles.statValue}>{provider.availableLeads}</Text>
-            <Text style={styles.statLabel}>Available Leads</Text>
+            <Text style={styles.statLabel}>{t('stats.availableLeads')}</Text>
             <View style={styles.statAction}>
               <Ionicons name="add-circle" size={20} color="#667eea" />
-              <Text style={styles.statActionText}>Buy More</Text>
+              <Text style={styles.statActionText}>{t('quickActions.buyMore')}</Text>
             </View>
           </TouchableOpacity>
           <View style={styles.statCard}>
             <Ionicons name="checkmark-done-outline" size={32} color="#4CAF50" />
             <Text style={styles.statValue}>{provider.completedJobs}</Text>
-            <Text style={styles.statLabel}>Completed Jobs</Text>
+            <Text style={styles.statLabel}>{t('stats.completedJobs')}</Text>
           </View>
           <View style={styles.statCard}>
             <Ionicons name="star-outline" size={32} color="#FFD700" />
             <Text style={styles.statValue}>{provider.rating.toFixed(1)}</Text>
-            <Text style={styles.statLabel}>Rating</Text>
+            <Text style={styles.statLabel}>{t('stats.rating')}</Text>
           </View>
         </View>
 
@@ -173,11 +173,11 @@ export default function ProviderDashboardScreen({ provider, onLeadPress, onSubsc
           <View style={styles.revenueHeader}>
             <Text style={styles.revenueTitle}>{t('dashboard.earnings')}</Text>
             <TouchableOpacity>
-              <Text style={styles.viewDetails}>View Details</Text>
+              <Text style={styles.viewDetails}>{t('quickActions.viewDetails')}</Text>
             </TouchableOpacity>
           </View>
           <Text style={styles.revenueAmount}>$12,450</Text>
-          <Text style={styles.revenueSubtitle}>This month</Text>
+          <Text style={styles.revenueSubtitle}>{t('stats.thisMonth')}</Text>
           <View style={styles.revenueChart}>
             <View style={[styles.revenueBar, { height: 40 }]} />
             <View style={[styles.revenueBar, { height: 60 }]} />
@@ -194,7 +194,7 @@ export default function ProviderDashboardScreen({ provider, onLeadPress, onSubsc
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{t('dashboard.availableLeads')}</Text>
             <TouchableOpacity>
-              <Text style={styles.seeAll}>See All</Text>
+              <Text style={styles.seeAll}>{t('quickActions.seeAll')}</Text>
             </TouchableOpacity>
           </View>
 
@@ -247,23 +247,23 @@ export default function ProviderDashboardScreen({ provider, onLeadPress, onSubsc
 
         {/* Quick Actions */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <Text style={styles.sectionTitle}>{t('quickActions.title')}</Text>
           <View style={styles.actionsGrid}>
             <TouchableOpacity style={styles.actionCard}>
               <Ionicons name="calendar-outline" size={28} color="#667eea" />
-              <Text style={styles.actionText}>My Schedule</Text>
+              <Text style={styles.actionText}>{t('quickActions.mySchedule')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionCard}>
               <Ionicons name="star-outline" size={28} color="#667eea" />
-              <Text style={styles.actionText}>Reviews</Text>
+              <Text style={styles.actionText}>{t('quickActions.reviews')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionCard}>
               <Ionicons name="images-outline" size={28} color="#667eea" />
-              <Text style={styles.actionText}>Portfolio</Text>
+              <Text style={styles.actionText}>{t('quickActions.portfolio')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionCard}>
               <Ionicons name="settings-outline" size={28} color="#667eea" />
-              <Text style={styles.actionText}>Settings</Text>
+              <Text style={styles.actionText}>{t('quickActions.settings')}</Text>
             </TouchableOpacity>
           </View>
         </View>

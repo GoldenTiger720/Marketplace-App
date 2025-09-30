@@ -27,12 +27,31 @@ export default function RegisterScreen({ onRegister, onNavigateToLogin }: Props)
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [zipCode, setZipCode] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [businessName, setBusinessName] = useState('');
   const [role, setRole] = useState<UserRole>('customer');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = () => {
-    if (name && email && phone && password && zipCode) {
-      onRegister({ name, email, phone, password, zipCode, role });
+    if (name && email && phone && password && zipCode && city && state) {
+      const registrationData: any = {
+        name,
+        email,
+        phone,
+        password,
+        zipCode,
+        city,
+        state,
+        role
+      };
+
+      // Add business name for providers
+      if (role === 'provider' && businessName) {
+        registrationData.businessName = businessName;
+      }
+
+      onRegister(registrationData);
     }
   };
 
@@ -102,6 +121,28 @@ export default function RegisterScreen({ onRegister, onNavigateToLogin }: Props)
             </View>
 
             <View style={styles.inputContainer}>
+              <Ionicons name="business-outline" size={20} color="#666" style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder={t('auth.city')}
+                value={city}
+                onChangeText={setCity}
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Ionicons name="map-outline" size={20} color="#666" style={styles.inputIcon} />
+              <TextInput
+                style={styles.input}
+                placeholder={t('auth.state')}
+                value={state}
+                onChangeText={setState}
+                autoCapitalize="characters"
+                maxLength={2}
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
               <Ionicons name="lock-closed-outline" size={20} color="#666" style={styles.inputIcon} />
               <TextInput
                 style={styles.input}
@@ -151,6 +192,18 @@ export default function RegisterScreen({ onRegister, onNavigateToLogin }: Props)
                 </TouchableOpacity>
               </View>
             </View>
+
+            {role === 'provider' && (
+              <View style={styles.inputContainer}>
+                <Ionicons name="briefcase-outline" size={20} color="#666" style={styles.inputIcon} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Business Name (Optional)"
+                  value={businessName}
+                  onChangeText={setBusinessName}
+                />
+              </View>
+            )}
 
             <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
               <LinearGradient

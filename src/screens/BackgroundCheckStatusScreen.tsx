@@ -10,6 +10,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BackgroundCheck, BackgroundCheckStatus } from '../types';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   onBack: () => void;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }: Props) {
+  const { t } = useTranslation();
   const getStatusColor = (status: BackgroundCheckStatus) => {
     const colors = {
       pending: '#FF9800',
@@ -43,12 +45,12 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
 
   const getStatusText = (status: BackgroundCheckStatus) => {
     const texts = {
-      pending: 'Background Check Pending',
-      in_progress: 'Background Check In Progress',
-      clear: 'Background Check Cleared',
-      flagged: 'Background Check Flagged',
-      rejected: 'Background Check Failed',
-      expired: 'Background Check Expired',
+      pending: t('backgroundCheck.pending'),
+      in_progress: t('backgroundCheck.inProgress'),
+      clear: t('backgroundCheck.clear'),
+      flagged: t('backgroundCheck.flagged'),
+      rejected: t('backgroundCheck.rejected'),
+      expired: t('backgroundCheck.expired'),
     };
     return texts[status];
   };
@@ -76,7 +78,7 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
         <Text style={styles.statusTitle}>{statusText}</Text>
         {backgroundCheck.completedAt && (
           <Text style={styles.statusDate}>
-            Completed: {new Date(backgroundCheck.completedAt).toLocaleDateString()}
+            {t('backgroundCheck.completed')}: {new Date(backgroundCheck.completedAt).toLocaleDateString()}
           </Text>
         )}
       </View>
@@ -89,7 +91,7 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#333" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Background Check Status</Text>
+        <Text style={styles.headerTitle}>{t('backgroundCheck.status')}</Text>
         <View style={styles.headerRight} />
       </View>
 
@@ -97,7 +99,7 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
         {renderStatusBanner()}
 
         <View style={styles.providerCard}>
-          <Text style={styles.providerLabel}>Background Check Provider</Text>
+          <Text style={styles.providerLabel}>{t('backgroundCheck.backgroundCheckProvider')}</Text>
           <Text style={styles.providerName}>{backgroundCheck.provider}</Text>
           <Text style={styles.providerSubtitle}>
             ID: {backgroundCheck.id}
@@ -108,9 +110,9 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
           <View style={styles.progressCard}>
             <Ionicons name="information-circle" size={24} color="#2196F3" />
             <View style={styles.progressContent}>
-              <Text style={styles.progressTitle}>Check in Progress</Text>
+              <Text style={styles.progressTitle}>{t('backgroundCheck.checkInProgress')}</Text>
               <Text style={styles.progressText}>
-                Your background check is being processed. This typically takes 3-5 business days. You'll receive an email notification once completed.
+                {t('backgroundCheck.checkInProgressText')}
               </Text>
             </View>
           </View>
@@ -120,9 +122,9 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
           <View style={styles.progressCard}>
             <Ionicons name="time-outline" size={24} color="#FF9800" />
             <View style={styles.progressContent}>
-              <Text style={styles.progressTitle}>Pending Submission</Text>
+              <Text style={styles.progressTitle}>{t('backgroundCheck.pendingSubmission')}</Text>
               <Text style={styles.progressText}>
-                Your background check has been initiated and is waiting to be processed by our verification partner.
+                {t('backgroundCheck.pendingSubmissionText')}
               </Text>
             </View>
           </View>
@@ -130,7 +132,7 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
 
         {backgroundCheck.results && (
           <>
-            <Text style={styles.sectionTitle}>Check Results</Text>
+            <Text style={styles.sectionTitle}>{t('backgroundCheck.checkResults')}</Text>
 
             <View style={styles.checksContainer}>
               <View style={styles.checkResultCard}>
@@ -140,10 +142,10 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
                     size={28}
                     color={getCheckResultColor(backgroundCheck.results.criminalRecordsCheck.status)}
                   />
-                  <Text style={styles.checkResultTitle}>Criminal Records Check</Text>
+                  <Text style={styles.checkResultTitle}>{t('backgroundCheck.criminalRecords')} Check</Text>
                 </View>
                 <Text style={styles.checkResultStatus}>
-                  Status: {backgroundCheck.results.criminalRecordsCheck.status.toUpperCase()}
+                  {t('backgroundCheck.statusLabel')}: {backgroundCheck.results.criminalRecordsCheck.status.toUpperCase()}
                 </Text>
                 {backgroundCheck.results.criminalRecordsCheck.details && (
                   <Text style={styles.checkResultDetails}>
@@ -159,13 +161,13 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
                     size={28}
                     color={getCheckResultColor(backgroundCheck.results.sexOffenderRegistryCheck.status)}
                   />
-                  <Text style={styles.checkResultTitle}>Sex Offender Registry</Text>
+                  <Text style={styles.checkResultTitle}>{t('backgroundCheck.sexOffenderRegistry')}</Text>
                 </View>
                 <Text style={styles.checkResultStatus}>
-                  Status: {backgroundCheck.results.sexOffenderRegistryCheck.status.toUpperCase()}
+                  {t('backgroundCheck.statusLabel')}: {backgroundCheck.results.sexOffenderRegistryCheck.status.toUpperCase()}
                 </Text>
                 <Text style={styles.checkResultImportant}>
-                  ⚠ Special focus: Sex crimes, pedophilia
+                  {t('backgroundCheck.sexOffenderWarning')}
                 </Text>
               </View>
 
@@ -176,10 +178,10 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
                     size={28}
                     color={getCheckResultColor(backgroundCheck.results.nationalDatabaseCheck.status)}
                   />
-                  <Text style={styles.checkResultTitle}>National Database</Text>
+                  <Text style={styles.checkResultTitle}>{t('backgroundCheck.nationalDatabase')}</Text>
                 </View>
                 <Text style={styles.checkResultStatus}>
-                  Status: {backgroundCheck.results.nationalDatabaseCheck.status.toUpperCase()}
+                  {t('backgroundCheck.statusLabel')}: {backgroundCheck.results.nationalDatabaseCheck.status.toUpperCase()}
                 </Text>
               </View>
 
@@ -190,10 +192,10 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
                     size={28}
                     color={getCheckResultColor(backgroundCheck.results.stateRecordsCheck.status)}
                   />
-                  <Text style={styles.checkResultTitle}>State Records</Text>
+                  <Text style={styles.checkResultTitle}>{t('backgroundCheck.stateRecords')}</Text>
                 </View>
                 <Text style={styles.checkResultStatus}>
-                  Status: {backgroundCheck.results.stateRecordsCheck.status.toUpperCase()}
+                  {t('backgroundCheck.statusLabel')}: {backgroundCheck.results.stateRecordsCheck.status.toUpperCase()}
                 </Text>
               </View>
 
@@ -204,17 +206,17 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
                     size={28}
                     color={getCheckResultColor(backgroundCheck.results.identityVerification.status)}
                   />
-                  <Text style={styles.checkResultTitle}>Identity Verification</Text>
+                  <Text style={styles.checkResultTitle}>{t('backgroundCheck.identityVerification')}</Text>
                 </View>
                 <Text style={styles.checkResultStatus}>
-                  Status: {backgroundCheck.results.identityVerification.status.toUpperCase()}
+                  {t('backgroundCheck.statusLabel')}: {backgroundCheck.results.identityVerification.status.toUpperCase()}
                 </Text>
               </View>
             </View>
 
             {backgroundCheck.results.flags && backgroundCheck.results.flags.length > 0 && (
               <View style={styles.flagsSection}>
-                <Text style={styles.flagsTitle}>⚠ Flags Detected</Text>
+                <Text style={styles.flagsTitle}>{t('backgroundCheck.flagsDetected')}</Text>
                 {backgroundCheck.results.flags.map((flag) => (
                   <View
                     key={flag.id}
@@ -248,7 +250,7 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
             )}
 
             <View style={styles.clearanceCard}>
-              <Text style={styles.clearanceTitle}>Final Clearance</Text>
+              <Text style={styles.clearanceTitle}>{t('backgroundCheck.finalClearance')}</Text>
               <View
                 style={[
                   styles.clearanceBadge,
@@ -263,7 +265,11 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
                 ]}
               >
                 <Text style={styles.clearanceBadgeText}>
-                  {backgroundCheck.results.clearanceLevel.replace(/_/g, ' ').toUpperCase()}
+                  {backgroundCheck.results.clearanceLevel === 'approved'
+                    ? t('backgroundCheck.approved')
+                    : backgroundCheck.results.clearanceLevel === 'review_required'
+                    ? t('backgroundCheck.reviewRequired')
+                    : t('backgroundCheck.denied')}
                 </Text>
               </View>
             </View>
@@ -273,9 +279,9 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
         {backgroundCheck.status === 'clear' && (
           <View style={styles.successCard}>
             <Ionicons name="checkmark-circle" size={48} color="#4CAF50" />
-            <Text style={styles.successTitle}>Profile Activated</Text>
+            <Text style={styles.successTitle}>{t('backgroundCheck.profileActivated')}</Text>
             <Text style={styles.successText}>
-              Your background check has been cleared and your provider profile is now active on the platform. You can start receiving leads!
+              {t('backgroundCheck.profileActivatedText')}
             </Text>
           </View>
         )}
@@ -283,9 +289,9 @@ export default function BackgroundCheckStatusScreen({ onBack, backgroundCheck }:
         {backgroundCheck.status === 'rejected' && (
           <View style={styles.rejectionCard}>
             <Ionicons name="close-circle" size={48} color="#F44336" />
-            <Text style={styles.rejectionTitle}>Profile Not Approved</Text>
+            <Text style={styles.rejectionTitle}>{t('backgroundCheck.profileNotApproved')}</Text>
             <Text style={styles.rejectionText}>
-              Unfortunately, your background check did not meet our platform's safety requirements. Your profile cannot be activated at this time.
+              {t('backgroundCheck.profileNotApprovedText')}
             </Text>
           </View>
         )}

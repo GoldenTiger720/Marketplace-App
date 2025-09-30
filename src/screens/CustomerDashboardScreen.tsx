@@ -79,17 +79,17 @@ export default function CustomerDashboardScreen({ customer, onRequestPress, onCr
           <View style={styles.statCard}>
             <Ionicons name="document-text-outline" size={32} color="#667eea" />
             <Text style={styles.statValue}>{requests.length}</Text>
-            <Text style={styles.statLabel}>Active Requests</Text>
+            <Text style={styles.statLabel}>{t('stats.activeRequests')}</Text>
           </View>
           <View style={styles.statCard}>
             <Ionicons name="checkmark-done-outline" size={32} color="#4CAF50" />
             <Text style={styles.statValue}>{requests.filter((r) => r.status === 'completed').length}</Text>
-            <Text style={styles.statLabel}>Completed</Text>
+            <Text style={styles.statLabel}>{t('stats.completed')}</Text>
           </View>
           <View style={styles.statCard}>
             <Ionicons name="chatbubbles-outline" size={32} color="#FF9800" />
             <Text style={styles.statValue}>2</Text>
-            <Text style={styles.statLabel}>Messages</Text>
+            <Text style={styles.statLabel}>{t('stats.messages')}</Text>
           </View>
         </View>
 
@@ -97,7 +97,7 @@ export default function CustomerDashboardScreen({ customer, onRequestPress, onCr
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{t('dashboard.myRequests')}</Text>
             <TouchableOpacity onPress={() => setShowNewRequestModal(true)}>
-              <Text style={styles.seeAll}>+ New Request</Text>
+              <Text style={styles.seeAll}>+ {t('quickActions.newRequest')}</Text>
             </TouchableOpacity>
           </View>
 
@@ -154,23 +154,23 @@ export default function CustomerDashboardScreen({ customer, onRequestPress, onCr
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <Text style={styles.sectionTitle}>{t('quickActions.title')}</Text>
           <View style={styles.actionsGrid}>
             <TouchableOpacity style={styles.actionCard}>
               <Ionicons name="search-outline" size={28} color="#667eea" />
-              <Text style={styles.actionText}>Find Providers</Text>
+              <Text style={styles.actionText}>{t('quickActions.findProviders')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionCard}>
               <Ionicons name="star-outline" size={28} color="#667eea" />
-              <Text style={styles.actionText}>My Reviews</Text>
+              <Text style={styles.actionText}>{t('quickActions.myReviews')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionCard}>
               <Ionicons name="heart-outline" size={28} color="#667eea" />
-              <Text style={styles.actionText}>Favorites</Text>
+              <Text style={styles.actionText}>{t('quickActions.favorites')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionCard}>
               <Ionicons name="settings-outline" size={28} color="#667eea" />
-              <Text style={styles.actionText}>Settings</Text>
+              <Text style={styles.actionText}>{t('quickActions.settings')}</Text>
             </TouchableOpacity>
           </View>
         </View>

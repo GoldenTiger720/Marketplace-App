@@ -31,6 +31,25 @@ export default function HomeScreen({ onProviderPress, onFilterPress }: Props) {
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [filters, setFilters] = useState<FilterOptions>({});
 
+  const getCategoryTranslation = (category: string) => {
+    const categoryMap: Record<string, string> = {
+      'All': t('categories.all'),
+      'Cleaning': t('categories.cleaning'),
+      'Home Repair': t('categories.homeRepair'),
+      'Home Improvement': t('categories.homeImprovement'),
+      'Outdoor': t('categories.outdoor'),
+      'Moving': t('categories.moving'),
+      'Home Services': t('categories.homeServices'),
+      'Pet Services': t('categories.petServices'),
+      'Events': t('categories.events'),
+      'Fitness': t('categories.fitness'),
+      'Business': t('categories.business'),
+      'Tech': t('categories.tech'),
+      'Automotive': t('categories.automotive'),
+    };
+    return categoryMap[category] || category;
+  };
+
   const filterProviders = (query: string, category: string, appliedFilters: FilterOptions) => {
     let filtered = MOCK_PROVIDERS;
 
@@ -226,7 +245,7 @@ export default function HomeScreen({ onProviderPress, onFilterPress }: Props) {
                     selectedCategory === category && styles.categoryChipTextActive,
                   ]}
                 >
-                  {category}
+                  {getCategoryTranslation(category)}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -237,14 +256,14 @@ export default function HomeScreen({ onProviderPress, onFilterPress }: Props) {
           <View style={styles.resultsHeader}>
             <View>
               <Text style={styles.sectionTitle}>{t('home.topRated')}</Text>
-              <Text style={styles.resultsCount}>{providers.length} providers found</Text>
+              <Text style={styles.resultsCount}>{providers.length} {t('search.providersFound')}</Text>
             </View>
             {getActiveFiltersCount() > 0 && (
               <TouchableOpacity
                 style={styles.clearFiltersButton}
                 onPress={() => handleApplyFilters({})}
               >
-                <Text style={styles.clearFiltersText}>Clear Filters</Text>
+                <Text style={styles.clearFiltersText}>{t('search.clearFilters')}</Text>
               </TouchableOpacity>
             )}
           </View>

@@ -28,6 +28,8 @@ import BackgroundCheckStatusScreen from '../screens/BackgroundCheckStatusScreen'
 import { Provider, Customer, ServiceRequest, Lead, SubscriptionPlan } from '../types';
 import { MOCK_PROVIDERS, MOCK_CUSTOMERS } from '../data/mockData';
 import { useApp } from '../contexts/AppContext';
+import { authenticateUser, registerUser } from '../database/userService';
+import { Alert } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -90,7 +92,7 @@ function CustomerTabs({ onLogout }: TabsProps) {
       <Tab.Screen
         name="Dashboard"
         options={{
-          tabBarLabel: 'Dashboard',
+          tabBarLabel: t('common.dashboard'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="grid-outline" size={size} color={color} />
           ),
@@ -126,7 +128,7 @@ function CustomerTabs({ onLogout }: TabsProps) {
       <Tab.Screen
         name="Profile"
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: t('provider.profile'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" size={size} color={color} />
           ),
@@ -182,7 +184,7 @@ function ProviderTabs({ onLogout }: TabsProps) {
       <Tab.Screen
         name="Dashboard"
         options={{
-          tabBarLabel: 'Dashboard',
+          tabBarLabel: t('common.dashboard'),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="grid-outline" size={size} color={color} />
           ),
@@ -263,37 +265,51 @@ export default function AppNavigator() {
   const { setCurrentUser, isProvider, currentUser } = useApp();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handleLogin = (_email: string, _password: string) => {
-    // Mock login - in real app, this would authenticate with backend
-    setIsAuthenticated(true);
-    setCurrentUser(MOCK_CUSTOMERS[0]);
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      const user = await authenticateUser(email, password);
+
+      if (user) {
+        setIsAuthenticated(true);
+        setCurrentUser(user);
+      } else {
+        Alert.alert('Login Failed', 'Invalid email or password');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      Alert.alert('Login Error', error instanceof Error ? error.message : 'An error occurred during login');
+    }
   };
 
-  const handleRegister = (data: any, navigation?: any) => {
-    // Mock registration
-    if (data.role === 'provider') {
-      // Providers must complete background check before activation
-      // Create temporary provider account (profile not activated)
-      const tempProvider = {
-        ...MOCK_PROVIDERS[5], // Use p6 which has in_progress status
+  const handleRegister = async (data: any, navigation?: any) => {
+    try {
+      const user = await registerUser({
         name: data.name,
         email: data.email,
-        backgroundCheckStatus: 'pending' as const,
-        profileActivated: false,
-      };
-      setCurrentUser(tempProvider);
+        password: data.password,
+        phone: data.phone,
+        role: data.role,
+        zipCode: data.zipCode,
+        city: data.city,
+        state: data.state,
+        businessName: data.businessName,
+      });
+
+      setCurrentUser(user);
       setIsAuthenticated(true);
 
-      // Navigate to background check consent
-      if (navigation) {
-        setTimeout(() => {
-          navigation.navigate('BackgroundCheckConsent');
-        }, 100);
+      if (data.role === 'provider') {
+        // Providers must complete background check before activation
+        // Navigate to background check consent
+        if (navigation) {
+          setTimeout(() => {
+            navigation.navigate('BackgroundCheckConsent');
+          }, 100);
+        }
       }
-    } else {
-      // Customers can be activated immediately
-      setIsAuthenticated(true);
-      setCurrentUser(MOCK_CUSTOMERS[0]);
+    } catch (error) {
+      console.error('Registration error:', error);
+      Alert.alert('Registration Error', error instanceof Error ? error.message : 'An error occurred during registration');
     }
   };
 
